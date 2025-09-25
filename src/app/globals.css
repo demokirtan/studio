@@ -81,6 +81,7 @@
       linear-gradient(to right, hsl(var(--border)) 1px, transparent 1px),
       linear-gradient(to bottom, hsl(var(--border)) 1px, transparent 1px);
     background-size: 4rem 4rem;
+    animation: move-grid 20s linear infinite;
   }
 
   @keyframes fadeIn {
@@ -91,6 +92,15 @@
     to {
       opacity: 1;
       transform: translateY(0);
+    }
+  }
+
+  @keyframes move-grid {
+    0% {
+      background-position: 0 0;
+    }
+    100% {
+      background-position: 4rem 4rem;
     }
   }
 
