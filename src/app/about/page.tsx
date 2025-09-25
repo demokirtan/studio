@@ -3,9 +3,27 @@ import { PlaceHolderImages } from "@/lib/placeholder-images";
 
 export default function AboutPage() {
   const aboutImage = PlaceHolderImages.find((img) => img.id === "about-portrait");
-  const [width, height] = aboutImage
-    ? aboutImage.imageUrl.split("/").slice(-2)
-    : ["800", "1000"];
+  
+  let width = 800;
+  let height = 1000;
+
+  if (aboutImage?.imageUrl) {
+    try {
+      const url = new URL(aboutImage.imageUrl);
+      const widthParam = url.searchParams.get("w");
+      const heightParam = url.searchParams.get("h");
+
+      if (widthParam && !isNaN(parseInt(widthParam))) {
+        width = parseInt(widthParam, 10);
+      }
+      if (heightParam && !isNaN(parseInt(heightParam))) {
+        height = parseInt(heightParam, 10);
+      }
+    } catch (e) {
+      // Keep default values if URL parsing fails
+    }
+  }
+
 
   return (
     <div className="fade-in">
@@ -54,8 +72,8 @@ export default function AboutPage() {
                 <Image
                   src={aboutImage.imageUrl}
                   alt={aboutImage.description}
-                  width={parseInt(width)}
-                  height={parseInt(height)}
+                  width={width}
+                  height={height}
                   data-ai-hint={aboutImage.imageHint}
                   className="h-full w-full object-cover"
                 />
