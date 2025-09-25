@@ -19,7 +19,7 @@ export function ProjectSectionHeader() {
   const y = useTransform(scrollYProgress, [0, 1], [50, 0]);
 
   return (
-    <section ref={targetRef} className="relative mb-16 text-center fade-in h-64 flex flex-col justify-center">
+    <section ref={targetRef} className="relative mb-12 sm:mb-16 text-center fade-in h-48 sm:h-64 flex flex-col justify-center">
         <motion.div style={{ y, opacity, filter: useTransform(blur, (v) => `blur(${v}px)`) }} className="relative z-10">
             <h2 
                 className="font-headline text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl"
@@ -27,7 +27,7 @@ export function ProjectSectionHeader() {
                 Projects We Love
             </h2>
             <p 
-                className="mx-auto mt-4 max-w-2xl text-lg text-muted-foreground"
+                className="mx-auto mt-4 max-w-2xl text-base sm:text-lg text-muted-foreground"
             >
                 A collection of projects showcasing my passion for design and
                 technology.

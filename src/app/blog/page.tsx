@@ -62,11 +62,11 @@ const posts = [
 export default function BlogPage() {
   return (
     <div className="container mx-auto px-4 py-16 sm:px-6 lg:px-8">
-      <div className="mb-16 text-center fade-in">
+      <div className="mb-12 md:mb-16 text-center fade-in">
         <h1 className="font-headline text-5xl font-bold tracking-tighter sm:text-6xl md:text-7xl">
           Blog
         </h1>
-        <p className="mx-auto mt-4 max-w-2xl text-lg text-muted-foreground">
+        <p className="mx-auto mt-4 max-w-2xl text-base text-muted-foreground sm:text-lg">
           Thoughts on design, development, and everything in between.
         </p>
       </div>
@@ -75,12 +75,12 @@ export default function BlogPage() {
         <div className="space-y-12">
           {posts.map((post, index) => (
             <article key={post.slug} className="fade-in-stagger opacity-0" style={{ animationDelay: `${index * 150}ms` }}>
-              <h2 className="font-headline text-3xl font-bold">
+              <h2 className="font-headline text-2xl sm:text-3xl font-bold">
                 <Link href={`/blog/${post.slug}`} className="hover:text-primary transition-colors">
                   {post.title}
                 </Link>
               </h2>
-              <p className="mt-2 text-muted-foreground">
+              <p className="mt-2 text-base text-muted-foreground sm:text-lg">
                 {post.description}
               </p>
               <p className="mt-4">

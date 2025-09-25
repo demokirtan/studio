@@ -6,7 +6,7 @@ import React, { useEffect, useRef, useState } from 'react';
 const SKILL_SPHERE_STYLES = {
   container: {
     width: '100%',
-    height: '450px',
+    height: 'clamp(300px, 50vw, 450px)',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
@@ -18,7 +18,7 @@ const SKILL_SPHERE_STYLES = {
     borderRadius: '8px',
     backgroundColor: 'hsl(var(--secondary) / 0.8)',
     color: 'hsl(var(--primary))',
-    fontSize: '1rem',
+    fontSize: 'clamp(0.8rem, 2vw, 1rem)',
     fontWeight: 500,
     cursor: 'default',
     userSelect: 'none',
@@ -79,10 +79,15 @@ export function SkillSphere({ skills }: { skills: string[] }) {
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
-    if (containerRef.current) {
-      setRadius(containerRef.current.offsetWidth / 3.5);
-    }
+    const updateRadius = () => {
+      if (containerRef.current) {
+        setRadius(containerRef.current.offsetWidth / 3.5);
+      }
+    };
+    updateRadius();
     setIsMounted(true);
+    window.addEventListener('resize', updateRadius);
+    return () => window.removeEventListener('resize', updateRadius);
   }, []);
 
   useEffect(() => {
@@ -117,7 +122,7 @@ export function SkillSphere({ skills }: { skills: string[] }) {
       const dx = e.clientX - mousePosRef.current.x;
       const dy = e.clientY - mousePosRef.current.y;
       
-      const newRotationX = -dy * 0.005; // Increased sensitivity
+      const newRotationX = -dy * 0.005;  // Increased sensitivity
       const newRotationY = dx * 0.005;  // Increased sensitivity
 
       setRotation(prev => ({

@@ -74,17 +74,17 @@ export function AboutSection() {
 
   return (
     <div id="about" className="fade-in">
-      <div className="container mx-auto max-w-5xl px-4 py-32 sm:px-6 lg:px-8">
-        <section className="mb-16">
-          <h1 className="font-headline text-6xl font-bold uppercase tracking-tighter text-foreground sm:text-7xl md:text-8xl leading-none">
+      <div className="container mx-auto max-w-5xl px-4 py-16 sm:px-6 md:py-32 lg:px-8">
+        <section className="mb-12 md:mb-16">
+          <h1 className="font-headline text-5xl font-bold uppercase tracking-tighter text-foreground sm:text-6xl md:text-8xl leading-none">
             About Me
           </h1>
         </section>
 
-        <section className="grid grid-cols-1 md:grid-cols-3 gap-12 items-start mb-24">
+        <section className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12 items-start mb-16 md:mb-24">
             <div className="md:col-span-1 relative h-auto w-full flex items-center justify-center">
                 {aboutImage && (
-                <div className="overflow-hidden rounded-lg shadow-lg w-full">
+                <div className="overflow-hidden rounded-lg shadow-lg w-full max-w-xs md:max-w-full mx-auto">
                     <Image
                       src={aboutImage.imageUrl}
                       alt={aboutImage.description}
@@ -96,14 +96,14 @@ export function AboutSection() {
                 </div>
                 )}
             </div>
-            <div className="md:col-span-2 space-y-8">
-                <div className="space-y-4">
-                    <h2 className="text-4xl font-bold font-headline">KIRTAN KALATHIYA</h2>
-                    <p className="text-muted-foreground text-lg">
+            <div className="md:col-span-2 space-y-6">
+                <div className="space-y-2">
+                    <h2 className="text-3xl sm:text-4xl font-bold font-headline">KIRTAN KALATHIYA</h2>
+                    <p className="text-muted-foreground text-base sm:text-lg">
                       WEB DESIGNER + DEVELOPER
                     </p>
                 </div>
-                <div className="space-y-4 text-lg text-muted-foreground">
+                <div className="space-y-4 text-base sm:text-lg text-muted-foreground">
                   <p>
                   My name is Kirtan Kalathiya, a web designer and developer from Surat, India. I'm a passionate programmer and quick learner with experience in Node.js, React, Bootstrap, MongoDB, and MySQL. As an SEO fresher, I have basic knowledge of on-page and off-page SEO, keyword research, and tools like Google Search Console and Yoast SEO. I'm eager to build websites that are both user-friendly and search engine optimized.
                   </p>
@@ -116,22 +116,22 @@ export function AboutSection() {
             </div>
         </section>
 
-        <section className="mb-24">
-          <h2 className="font-headline text-4xl font-bold mb-12 text-center">My Skills</h2>
+        <section className="mb-16 md:mb-24">
+          <h2 className="font-headline text-3xl sm:text-4xl font-bold mb-8 sm:mb-12 text-center">My Skills</h2>
           <SkillSphere skills={skills} />
         </section>
 
-        <section className="mb-24">
-          <h2 className="font-headline text-4xl font-bold mb-8">Education</h2>
+        <section className="mb-16 md:mb-24">
+          <h2 className="font-headline text-3xl sm:text-4xl font-bold mb-8">Education</h2>
           <div className="space-y-6">
             {education.map(edu => (
               <div key={edu.degree} className="flex flex-col sm:flex-row justify-between sm:items-start">
-                <div>
-                  <h3 className="text-xl font-bold">{edu.degree}</h3>
-                  <p className="text-muted-foreground">{edu.institution}</p>
+                <div className="max-w-md">
+                  <h3 className="text-lg sm:text-xl font-bold">{edu.degree}</h3>
+                  <p className="text-muted-foreground text-sm sm:text-base">{edu.institution}</p>
                 </div>
-                <div className="text-right">
-                  <p className="text-muted-foreground font-mono text-sm mt-2 sm:mt-0">{edu.year}</p>
+                <div className="text-left sm:text-right flex-shrink-0 mt-2 sm:mt-0">
+                  <p className="text-muted-foreground font-mono text-sm">{edu.year}</p>
                   {edu.grade && <p className="text-muted-foreground font-mono text-sm">{edu.grade}</p>}
                 </div>
               </div>
@@ -139,24 +139,24 @@ export function AboutSection() {
           </div>
         </section>
 
-        <section className="mb-24">
-          <h2 className="font-headline text-4xl font-bold mb-8">Certificates</h2>
+        <section className="mb-16 md:mb-24">
+          <h2 className="font-headline text-3xl sm:text-4xl font-bold mb-8">Certificates</h2>
           <div className="space-y-6">
             {certificates.map(cert => (
               <div key={cert.name} className="flex flex-col sm:flex-row justify-between sm:items-center">
-                <div>
-                  <h3 className="text-xl font-bold">{cert.name}</h3>
+                <div className="max-w-md">
+                  <h3 className="text-lg sm:text-xl font-bold">{cert.name}</h3>
                   <p className="text-muted-foreground">{cert.issuer}</p>
                 </div>
-                <p className="text-muted-foreground font-mono text-sm mt-2 sm:mt-0">{cert.year}</p>
+                <p className="text-muted-foreground font-mono text-sm mt-2 sm:mt-0 flex-shrink-0">{cert.year}</p>
               </div>
             ))}
           </div>
         </section>
 
         <section>
-          <h2 className="font-headline text-4xl font-bold mb-8">Interests</h2>
-          <ul className="list-disc list-inside space-y-2 text-lg text-muted-foreground">
+          <h2 className="font-headline text-3xl sm:text-4xl font-bold mb-8">Interests</h2>
+          <ul className="list-disc list-inside space-y-2 text-base sm:text-lg text-muted-foreground">
             {interests.map(interest => (
               <li key={interest}>{interest}</li>
             ))}

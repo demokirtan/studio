@@ -2,7 +2,7 @@ export default function SamplePostPage() {
     return (
         <article className="container mx-auto px-4 py-16 sm:px-6 lg:px-8 max-w-3xl">
             <header className="mb-8">
-                <h1 className="font-headline text-5xl font-bold tracking-tighter">My First Blog Post</h1>
+                <h1 className="font-headline text-4xl font-bold tracking-tighter md:text-5xl">My First Blog Post</h1>
                 <p className="mt-2 text-lg text-muted-foreground">A journey into MDX.</p>
             </header>
             <div className="prose prose-invert lg:prose-xl mx-auto">

@@ -44,7 +44,7 @@ export function Hero() {
       <Ticker />
 
       <div
-        className="container relative z-20 mx-auto grid h-dvh grid-cols-1 grid-rows-[auto_1fr_auto] gap-8 px-4 py-8 sm:grid-cols-2 sm:px-6 lg:px-8"
+        className="container relative z-20 mx-auto grid h-dvh grid-cols-1 grid-rows-[auto_1fr_auto] gap-8 px-4 py-8 sm:px-6 lg:px-8"
       >
         
         <div 
@@ -60,14 +60,14 @@ export function Hero() {
         </div>
 
         <div 
-          className="col-start-1 row-start-2 -mt-20 flex flex-col items-start self-start text-left sm:col-start-2 sm:row-start-1 sm:mt-0 sm:items-end sm:text-right"
+          className="col-start-1 row-start-1 self-start justify-self-end sm:col-start-2 sm:row-start-1 sm:justify-self-end sm:self-start"
         >
           <div className="flex items-center gap-4">
-            <span className="font-mono text-sm text-muted-foreground">
+            <span className="font-mono text-xs sm:text-sm text-muted-foreground text-right">
               ■ Surat, Gujarat, India
             </span>
           </div>
-          <nav className="mt-4 flex flex-col items-start space-y-1 text-sm font-medium md:flex-row md:items-center md:space-x-4 md:space-y-0">
+          <nav className="mt-2 sm:mt-4 flex flex-col items-end space-y-1 text-sm font-medium">
             {navItems.map((item) => (
               <Link
                 key={item.href}
@@ -83,21 +83,21 @@ export function Hero() {
           </nav>
         </div>
 
-        <div className="col-span-2 row-start-3 self-end md:col-span-1">
+        <div className="col-span-1 row-start-3 self-end md:col-span-1">
           <h1 
-            className="font-headline text-5xl font-bold uppercase leading-none tracking-tighter md:text-7xl"
+            className="font-headline text-5xl font-bold uppercase leading-none tracking-tighter sm:text-6xl md:text-7xl"
           >
             KIRTAN KALATHIYA
           </h1>
           <h2 
-            className="font-body text-lg text-muted-foreground"
+            className="font-body text-base sm:text-lg text-muted-foreground"
           >
             Web Designer & Developer
           </h2>
         </div>
 
         <div 
-          className="col-start-1 row-start-2 self-end sm:col-start-2 sm:row-start-3 sm:flex sm:items-end sm:justify-end sm:text-right"
+          className="col-start-1 row-start-2 self-center sm:col-start-2 sm:row-start-3 sm:self-end sm:flex sm:items-end sm:justify-end sm:text-right"
         >
           <div className="max-w-sm">
             <p className="text-base text-muted-foreground">

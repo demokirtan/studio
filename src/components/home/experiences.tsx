@@ -47,7 +47,7 @@ function Experience({
   const isOdd = index % 2 !== 0;
 
   return (
-    <section className="container mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 items-center py-24">
+    <section className="container mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 items-center py-12 md:py-24">
       <div 
         ref={ref} 
         className={cn(
@@ -71,10 +71,10 @@ function Experience({
         )}
       </div>
       <motion.div style={{ y }} className={cn("text-white", isOdd && "md:order-first")}>
-        <h3 className="font-headline text-4xl font-bold">{experience.title}</h3>
+        <h3 className="font-headline text-3xl sm:text-4xl font-bold">{experience.title}</h3>
         <p className="mt-2 text-lg text-muted-foreground">{experience.company}</p>
         <p className="mt-1 text-sm text-muted-foreground/80">{experience.period}</p>
-        <p className="mt-4 text-muted-foreground">{experience.description}</p>
+        <p className="mt-4 text-base sm:text-lg text-muted-foreground">{experience.description}</p>
       </motion.div>
     </section>
   );
@@ -88,16 +88,16 @@ export function Experiences() {
 
 
   return (
-    <div id="experience" className="relative py-48 bg-background background-grid">
+    <div id="experience" className="relative py-24 md:py-48 bg-background background-grid">
        <div 
         className="absolute inset-0 bg-gradient-to-br from-background via-transparent to-background"
       />
       <div className="relative z-10 container mx-auto">
-        <div className="text-center mb-24">
-            <h2 className="font-headline text-8xl md:text-9xl font-bold tracking-tighter text-transparent bg-clip-text bg-gradient-to-b from-foreground to-muted-foreground/80 leading-none">
+        <div className="text-center mb-16 md:mb-24">
+            <h2 className="font-headline text-6xl md:text-8xl lg:text-9xl font-bold tracking-tighter text-transparent bg-clip-text bg-gradient-to-b from-foreground to-muted-foreground/80 leading-none">
                 Dream. Make. Change.
             </h2>
-            <p className="mt-4 text-lg text-muted-foreground">Our process in three words.</p>
+            <p className="mt-4 text-base sm:text-lg text-muted-foreground">Our process in three words.</p>
         </div>
         
         {experiences.map((experience, index) => {

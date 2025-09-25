@@ -17,10 +17,10 @@ export default function Home() {
   return (
     <>
       <Hero />
-      <div id="work" className="container mx-auto px-4 pt-24 sm:px-6 lg:px-8">
+      <div id="work" className="container mx-auto px-4 pt-16 sm:px-6 lg:px-8 sm:pt-24">
         <ProjectSectionHeader />
 
-        <section className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3 pb-24">
+        <section className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3 pb-16 sm:pb-24">
           {projects.map((project, index) => {
             const image = imageMap[project.imageId];
             return (
