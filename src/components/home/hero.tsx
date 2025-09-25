@@ -34,7 +34,7 @@ export function Hero() {
 
   return (
     <div className="relative min-h-dvh w-full fade-in background-grid">
-      <div className="absolute inset-0 bg-gradient-to-br from-background via-transparent to-background" />
+      <div className="absolute inset-0 bg-gradient-to-br from-background via-transparent to-background animate-ticker" />
       <div className="container relative mx-auto grid h-dvh grid-cols-1 grid-rows-[auto_1fr_auto] gap-8 px-4 py-8 sm:grid-cols-2 sm:px-6 lg:px-8">
         {/* Top Left */}
         <div className="col-start-1 row-start-1 self-start">
