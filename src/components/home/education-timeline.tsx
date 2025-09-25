@@ -45,22 +45,14 @@ const journeyData = [
     },
 ];
 
-const JourneyNode = ({
+const Milestone = ({
   item,
   isMobile,
-  scrollYProgress,
-  onMouseMove,
-  handleMouseLeave,
-  rotateX,
-  rotateY,
+  scrollYProgress
 }: {
   item: typeof journeyData[0];
   isMobile: boolean;
   scrollYProgress: MotionValue<number>;
-  onMouseMove: (e: React.MouseEvent<HTMLDivElement>) => void;
-  handleMouseLeave: () => void;
-  rotateX: MotionValue<number>;
-  rotateY: MotionValue<number>;
 }) => {
     const itemIndex = journeyData.indexOf(item);
     const isEven = itemIndex % 2 === 0;
@@ -81,23 +73,13 @@ const JourneyNode = ({
                 right: isMobile ? undefined : (isEven ? undefined : '15%'),
                 opacity: opacity,
                 y: y,
-                rotateX,
-                rotateY,
             }}
-            onMouseMove={onMouseMove}
-            onMouseLeave={handleMouseLeave}
-            className="w-full sm:w-2/5 will-change-transform"
+            className="w-full sm:w-2/5 p-4"
         >
-            <motion.div 
-                className="bg-card/50 backdrop-blur-sm border border-border/20 rounded-lg p-4 shadow-lg"
-                initial={{ y: 0 }}
-                whileHover={{ y: -8 }}
-            >
-                <p className="text-muted-foreground font-mono text-sm">{item.year}</p>
-                <h3 className="text-lg sm:text-xl font-bold mt-1 text-foreground">{item.degree}</h3>
-                <p className="text-muted-foreground text-sm sm:text-base">{item.institution}</p>
-                {item.grade && <p className="text-muted-foreground font-mono text-xs mt-1">{item.grade}</p>}
-            </motion.div>
+            <p className="text-muted-foreground font-mono text-sm">{item.year}</p>
+            <h3 className="text-lg sm:text-xl font-bold mt-1 text-foreground">{item.degree}</h3>
+            <p className="text-muted-foreground text-sm sm:text-base">{item.institution}</p>
+            {item.grade && <p className="text-muted-foreground font-mono text-xs mt-1">{item.grade}</p>}
         </motion.div>
     );
 };
@@ -114,27 +96,6 @@ export function EducationTimeline({ experienceRef }: { experienceRef: React.RefO
 
     const pathLength = useTransform(scrollYProgress, [0.05, 0.8], [0, 1]);
 
-    const rotateX = useSpring(useTransform(scrollYProgress, [0, 1], [15, 0]), { stiffness: 400, damping: 90 });
-    const rotateY = useSpring(useTransform(scrollYProgress, [0, 1], [15, 0]), { stiffness: 400, damping: 90 });
-
-    const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-        const rect = e.currentTarget.getBoundingClientRect();
-        const { width, height } = rect;
-        const mouseX = e.clientX - rect.left;
-        const mouseY = e.clientY - rect.top;
-
-        const xPct = mouseX / width - 0.5;
-        const yPct = mouseY / height - 0.5;
-        
-        rotateX.set(-yPct * 20);
-        rotateY.set(xPct * 20);
-    }
-    
-    const handleMouseLeave = () => {
-        rotateX.set(0);
-        rotateY.set(0);
-    }
-
     const desktopPath = "M 500 0 V 150 Q 500 250 350 350 T 650 550 Q 650 650 500 750 V 900 Q 500 1000 350 1100 T 650 1300 V 1400";
     const mobilePath = "M 50 0 V 1400";
     const path = isMobile ? mobilePath : desktopPath;
@@ -142,7 +103,7 @@ export function EducationTimeline({ experienceRef }: { experienceRef: React.RefO
 
     return (
         <div ref={timelineRef} className="relative w-full" style={{ height: '140vh' }}>
-            <div className="sticky top-0 h-dvh w-full" style={{ perspective: '1000px' }}>
+            <div className="sticky top-0 h-dvh w-full">
                 <h2 className="font-headline text-3xl sm:text-4xl font-bold pt-16 text-center z-20 relative">My Journey</h2>
                 
                 <svg width="100%" height="100%" viewBox={isMobile ? "0 0 100 1400" : "0 0 1000 1400"} preserveAspectRatio="none" className="absolute top-0 left-0">
@@ -165,15 +126,11 @@ export function EducationTimeline({ experienceRef }: { experienceRef: React.RefO
 
                 <div className="relative h-full w-full">
                     {journeyData.map((item, index) => (
-                        <JourneyNode 
+                        <Milestone 
                             key={index} 
                             item={item} 
                             isMobile={isMobile ?? false} 
                             scrollYProgress={scrollYProgress}
-                            onMouseMove={handleMouseMove}
-                            handleMouseLeave={handleMouseLeave}
-                            rotateX={rotateX}
-                            rotateY={rotateY}
                         />
                     ))}
                 </div>
