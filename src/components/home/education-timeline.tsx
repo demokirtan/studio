@@ -4,6 +4,9 @@ import React, { useRef, useState } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { cn } from '@/lib/utils';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { experiences } from '@/lib/experiences-data';
+import type { Experience } from '@/lib/experiences-data';
+
 
 const journeyData = [
     {
@@ -36,22 +39,12 @@ const journeyData = [
     },
 ];
 
-const experienceData = {
-    type: 'experience',
-    title: 'SEO Intern',
-    company: 'CoreNet Tech',
-    period: '08/2025–Present',
-    description: 'Assisted in optimizing websites for search engines, focusing on both on-page and off-page SEO strategies. Conducted keyword research and analysis to improve website visibility and search rankings. Used Google Search Console & Yoast SEO to monitor performance.'
-};
-
-
 const JourneyNode = ({ item, index, isMobile }: { item: (typeof journeyData)[0], index: number, isMobile: boolean }) => {
     const isEven = index % 2 === 0;
     const cardRef = React.useRef<HTMLDivElement>(null);
-    const [isHovered, setIsHovered] = useState(false);
 
     const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-        if (!cardRef.current) return;
+        if (!cardRef.current || isMobile) return;
         const { clientX, clientY, currentTarget } = e;
         const { left, top, width, height } = currentTarget.getBoundingClientRect();
         const x = (clientX - left - width / 2) / 10;
@@ -60,7 +53,7 @@ const JourneyNode = ({ item, index, isMobile }: { item: (typeof journeyData)[0],
     };
 
     const handleMouseLeave = () => {
-        if (!cardRef.current) return;
+        if (!cardRef.current || isMobile) return;
         cardRef.current.style.transform = 'perspective(1000px) rotateY(0) rotateX(0) scale3d(1, 1, 1)';
     };
 
@@ -70,15 +63,13 @@ const JourneyNode = ({ item, index, isMobile }: { item: (typeof journeyData)[0],
                 "relative flex items-center w-full group",
                 isMobile ? 'justify-start' : (isEven ? 'justify-start' : 'justify-end')
             )}
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
+            initial={{ opacity: 0, x: isMobile ? -20 : (isEven ? -20 : 20) }}
+            whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, amount: 0.5 }}
             transition={{ duration: 0.8 }}
-            onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => setIsHovered(false)}
         >
             <div className={cn('absolute h-4 w-4 rounded-full border-2 border-primary bg-background z-10 transition-all duration-300 group-hover:scale-125 group-hover:shadow-[0_0_15px_5px] group-hover:shadow-primary/50',
-                isMobile ? 'left-0 -translate-x-1/2' : (isEven ? 'left-1/2 -translate-x-1/2' : 'left-1/2 -translate-x-1/2')
+                isMobile ? 'left-0 -translate-x-1/2' : 'left-1/2 -translate-x-1/2'
             )} />
 
             <div
@@ -99,12 +90,11 @@ const JourneyNode = ({ item, index, isMobile }: { item: (typeof journeyData)[0],
     );
 };
 
-const ExperienceNode = ({ item, isMobile }: { item: typeof experienceData, isMobile: boolean }) => {
+export const ExperienceNode = ({ item, isMobile }: { item: Experience, isMobile: boolean }) => {
     const cardRef = React.useRef<HTMLDivElement>(null);
-    const [isHovered, setIsHovered] = useState(false);
 
     const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-        if (!cardRef.current) return;
+        if (!cardRef.current || isMobile) return;
         const { clientX, clientY, currentTarget } = e;
         const { left, top, width, height } = currentTarget.getBoundingClientRect();
         const x = (clientX - left - width / 2) / 10;
@@ -113,19 +103,17 @@ const ExperienceNode = ({ item, isMobile }: { item: typeof experienceData, isMob
     };
 
     const handleMouseLeave = () => {
-        if (!cardRef.current) return;
+        if (!cardRef.current || isMobile) return;
         cardRef.current.style.transform = 'perspective(1000px) rotateY(0) rotateX(0) scale3d(1, 1, 1)';
     };
 
     return (
         <motion.div
-            className="relative w-full flex justify-center mt-16"
+            className="relative w-full flex justify-center pb-24"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.3 }}
             transition={{ duration: 0.8, delay: 0.5 }}
-            onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => setIsHovered(false)}
         >
              <div
                 ref={cardRef}
@@ -140,12 +128,9 @@ const ExperienceNode = ({ item, isMobile }: { item: typeof experienceData, isMob
                     <p className="text-muted-foreground font-mono text-sm">{item.period}</p>
                     <h3 className="text-lg sm:text-xl font-bold mt-1 text-foreground">{item.title}</h3>
                     <p className="text-muted-foreground text-sm sm:text-base">{item.company}</p>
-                    <motion.div
-                        className="mt-4 text-sm text-muted-foreground/80"
-                        initial={{ height: 'auto' }}
-                    >
-                       <p>{item.description}</p>
-                    </motion.div>
+                    {item.description && (
+                        <p className="mt-4 text-sm text-muted-foreground/80">{item.description}</p>
+                    )}
                 </div>
             </div>
         </motion.div>
@@ -157,35 +142,25 @@ export function EducationTimeline() {
     const ref = useRef<HTMLDivElement>(null);
     const { scrollYProgress } = useScroll({
         target: ref,
-        offset: ['start center', 'end end'],
+        offset: ['start center', 'end center'],
     });
 
-    const pathLength = useTransform(scrollYProgress, [0, 0.9], [0, 1]);
-    const parallax = useTransform(scrollYProgress, [0, 1], [-100, 100]);
+    const pathLength = useTransform(scrollYProgress, [0, 0.95], [0, 1]);
 
-    const desktopPath = "M 500 0 Q 500 150 350 200 T 500 400 Q 500 550 650 600 T 500 800 Q 500 950 350 1000";
-    const mobilePath = "M 0 0 L 0 1000";
+    const desktopPath = "M 500 0 Q 500 150 350 200 T 500 400 Q 500 550 650 600 T 500 800";
+    const mobilePath = "M 0 0 L 0 800";
 
     const path = isMobile ? mobilePath : desktopPath;
     const pathKey = isMobile ? 'mobile' : 'desktop';
 
-    const getPointAtLength = (length: number, path: string) => {
-        if (typeof document === 'undefined') return { x: 0, y: 0 };
-        const svgPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-        svgPath.setAttribute('d', path);
-        const totalLength = svgPath.getTotalLength();
-        return svgPath.getPointAtLength(length * totalLength);
-    };
-
     return (
-        <div ref={ref} className="relative max-w-4xl mx-auto py-24 px-4 min-h-[200vh]">
+        <div ref={ref} className="relative max-w-4xl mx-auto py-24 px-4 min-h-[140vh]">
              <h2 className="font-headline text-3xl sm:text-4xl font-bold mb-16 text-center">My Journey</h2>
             <div className="absolute top-0 h-full w-full" style={{ perspective: '1000px' }}>
                 <motion.div
                     className="absolute inset-0"
-                    style={{ y: parallax }}
                 >
-                    <svg width="100%" height="100%" viewBox={isMobile ? "0 0 50 1000" : "0 0 1000 1000"} preserveAspectRatio="none">
+                    <svg width="100%" height="100%" viewBox={isMobile ? "0 0 50 800" : "0 0 1000 800"} preserveAspectRatio="none">
                         <defs>
                             <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
                                 <feGaussianBlur stdDeviation="4" result="coloredBlur" />
@@ -223,17 +198,9 @@ export function EducationTimeline() {
 
             <div className="relative z-10 space-y-32 md:space-y-48">
                 {journeyData.map((item, index) => (
-                    <JourneyNode key={index} item={item} index={index} isMobile={isMobile} />
+                    <JourneyNode key={index} item={item} index={index} isMobile={isMobile ?? false} />
                 ))}
             </div>
-            
-            <div className="relative flex justify-center items-center h-96 mt-48">
-                 <h2 className="font-headline text-6xl md:text-8xl lg:text-9xl font-bold tracking-tighter text-transparent bg-clip-text bg-gradient-to-b from-foreground to-muted-foreground/80 leading-none">
-                  Dream. Make. Change.
-              </h2>
-            </div>
-
-            <ExperienceNode item={experienceData} isMobile={isMobile} />
         </div>
     );
 }
