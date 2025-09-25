@@ -1,8 +1,8 @@
-import { ContactForm } from "./contact-form";
+import { ContactForm } from "@/app/contact/contact-form";
 
-export default function ContactPage() {
+export function ContactSection() {
   return (
-    <div className="fade-in">
+    <div id="contact" className="fade-in">
       <div className="container mx-auto max-w-3xl px-4 py-32 sm:px-6 lg:px-8">
         <section className="mb-12 text-center">
           <h1 className="font-headline text-5xl font-bold tracking-tighter sm:text-6xl md:text-7xl">

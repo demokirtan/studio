@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
 
-export default function AboutPage() {
+export function AboutSection() {
   const aboutImage = PlaceHolderImages.find((img) => img.id === "about-portrait");
   
   let width = 800;
@@ -11,15 +11,17 @@ export default function AboutPage() {
     try {
       const url = new URL(aboutImage.imageUrl);
       const parts = url.pathname.split('/');
-      const w = parseInt(parts[parts.length - 2], 10);
-      const h = parseInt(parts[parts.length - 1], 10);
-      if (!isNaN(w)) width = w;
-      if (!isNaN(h)) height = h;
+      if (parts.length >= 2) {
+        const w = parseInt(parts[parts.length - 2], 10);
+        const h = parseInt(parts[parts.length - 1], 10);
+        if (!isNaN(w)) width = w;
+        if (!isNaN(h)) height = h;
+      }
     } catch (e) {
       // Keep default values if URL parsing fails
     }
   }
-
+  
   const skills = [
     "C", "C++", "Java", "Python", "JavaScript", "C#",
     "SQL", "React.js", "Node.js", "ASP.Net", "PHP",
@@ -50,7 +52,7 @@ export default function AboutPage() {
   ]
 
   return (
-    <div className="fade-in">
+    <div id="about" className="fade-in">
       <div className="container mx-auto max-w-5xl px-4 py-32 sm:px-6 lg:px-8">
         <section className="mb-16">
           <h1 className="font-headline text-6xl font-bold uppercase tracking-tighter text-foreground sm:text-7xl md:text-8xl leading-none">
@@ -113,7 +115,6 @@ export default function AboutPage() {
             ))}
           </div>
         </section>
-
       </div>
     </div>
   );

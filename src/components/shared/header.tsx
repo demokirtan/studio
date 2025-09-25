@@ -3,15 +3,27 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
+import React from "react";
 
 export function Header() {
   const pathname = usePathname();
 
   const navItems = [
     { href: "/#work", label: "Work" },
-    { href: "/about", label: "About" },
-    { href: "/contact", label: "Contact" },
+    { href: "/#about", label: "About" },
+    { href: "/#contact", label: "Contact" },
   ];
+
+  const handleScroll = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    if (href.startsWith("/#")) {
+      e.preventDefault();
+      const targetId = href.replace("/#", "");
+      const targetElement = document.getElementById(targetId);
+      if (targetElement) {
+        targetElement.scrollIntoView({ behavior: "smooth" });
+      }
+    }
+  };
 
   return (
     <header className={cn(
@@ -21,6 +33,7 @@ export function Header() {
       <div className="container mx-auto flex h-20 items-center justify-between px-4 sm:px-6 lg:px-8">
         <Link
           href="/"
+          onClick={(e) => handleScroll(e, '/')}
           className="text-2xl font-bold tracking-tighter transition-colors hover:text-muted-foreground font-headline uppercase"
         >
           Kirtan
@@ -31,6 +44,7 @@ export function Header() {
               <Link
                 key={item.href}
                 href={item.href}
+                onClick={(e) => handleScroll(e, item.href)}
                 className={cn(
                   "transition-colors hover:text-foreground",
                   (pathname === item.href || (item.href === "/#work" && pathname === "/"))
