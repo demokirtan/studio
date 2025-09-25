@@ -41,14 +41,22 @@ export function Hero() {
   });
 
   const y = useTransform(scrollYProgress, [0, 1], ["0%", "-50%"]);
+  const backgroundY = useTransform(scrollYProgress, [0, 1], ["0%", "40%"]);
+
 
   return (
     <div 
       ref={targetRef}
-      className="relative min-h-dvh w-full fade-in background-grid"
+      className="relative min-h-dvh w-full fade-in"
     >
-      <div className="absolute inset-0 bg-gradient-to-br from-background via-transparent to-background" />
-      <div className="container relative mx-auto grid h-dvh grid-cols-1 grid-rows-[auto_1fr_auto] gap-8 px-4 py-8 sm:grid-cols-2 sm:px-6 lg:px-8">
+      <motion.div 
+        className="absolute inset-0 z-0 background-grid"
+        style={{
+          y: backgroundY,
+        }}
+      />
+      <div className="absolute inset-0 z-10 bg-gradient-to-br from-background via-transparent to-background" />
+      <div className="container relative z-20 mx-auto grid h-dvh grid-cols-1 grid-rows-[auto_1fr_auto] gap-8 px-4 py-8 sm:grid-cols-2 sm:px-6 lg:px-8">
         {/* Top Left */}
         <div className="col-start-1 row-start-1 self-start">
           <Link
