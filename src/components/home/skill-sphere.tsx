@@ -75,6 +75,15 @@ export function SkillSphere({ skills }: { skills: string[] }) {
   const [rotation, setRotation] = useState({ x: 0, y: 0 });
   const mousePosRef = useRef({ x: 0, y: 0 });
   const isInteracting = useRef(false);
+  const [radius, setRadius] = useState(150);
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    if (containerRef.current) {
+      setRadius(containerRef.current.offsetWidth / 3.5);
+    }
+    setIsMounted(true);
+  }, []);
 
   useEffect(() => {
     let animationFrame: number;
@@ -121,8 +130,6 @@ export function SkillSphere({ skills }: { skills: string[] }) {
     isInteracting.current = false;
   }
 
-  const radius = containerRef.current ? containerRef.current.offsetWidth / 3.5 : 150;
-
   return (
     <div
       ref={containerRef}
@@ -133,7 +140,7 @@ export function SkillSphere({ skills }: { skills: string[] }) {
       onMouseLeave={handleMouseLeave}
     >
       <div style={{ transformStyle: 'preserve-3d' }}>
-        {skills.map((skill, index) => {
+        {isMounted && skills.map((skill, index) => {
           const { transform, opacity } = calculatePosition(
             index,
             skills.length,
