@@ -2,7 +2,8 @@
 
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import React from "react";
+import React, { useRef } from "react";
+import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 
@@ -31,10 +32,41 @@ export function Hero() {
         window.scrollTo({ top: 0, behavior: 'smooth'});
     }
   };
+  
+  const ref = useRef<HTMLDivElement>(null);
+  
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+
+  const springConfig = { damping: 15, stiffness: 100 };
+
+  const rotateX = useSpring(useTransform(mouseY, [0, 1], [-6, 6]), springConfig);
+  const rotateY = useSpring(useTransform(mouseX, [0, 1], [-6, 6]), springConfig);
+  const translateX = useSpring(useTransform(mouseX, [0, 1], [-15, 15]), springConfig);
+  const translateY = useSpring(useTransform(mouseY, [0, 1], [-10, 10]), springConfig);
+
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!ref.current) return;
+    const { left, top, width, height } = ref.current.getBoundingClientRect();
+    mouseX.set((e.clientX - left) / width);
+    mouseY.set((e.clientY - top) / height);
+  };
+  
+  const handleMouseLeave = () => {
+    mouseX.set(0.5);
+    mouseY.set(0.5);
+  };
+
 
   return (
-    <div className="relative min-h-dvh w-full fade-in background-grid">
-      <div className="absolute inset-0 bg-gradient-to-br from-background via-transparent to-background animate-ticker" />
+    <div 
+      ref={ref}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      className="relative min-h-dvh w-full fade-in background-grid"
+    >
+      <div className="absolute inset-0 bg-gradient-to-br from-background via-transparent to-background" />
       <div className="container relative mx-auto grid h-dvh grid-cols-1 grid-rows-[auto_1fr_auto] gap-8 px-4 py-8 sm:grid-cols-2 sm:px-6 lg:px-8">
         {/* Top Left */}
         <div className="col-start-1 row-start-1 self-start">
@@ -71,14 +103,23 @@ export function Hero() {
         </div>
 
         {/* Bottom Left */}
-        <div className="col-span-2 row-start-3 self-end md:col-span-1">
+        <motion.div 
+          className="col-span-2 row-start-3 self-end md:col-span-1"
+          style={{ 
+            rotateX, 
+            rotateY,
+            translateX,
+            translateY,
+            transformStyle: "preserve-3d" 
+          }}
+        >
           <h1 className="font-headline text-5xl font-bold uppercase leading-none tracking-tighter md:text-7xl">
             KIRTAN KALATHIYA
           </h1>
           <h2 className="font-body text-lg text-muted-foreground">
             Web Designer & Developer
           </h2>
-        </div>
+        </motion.div>
 
         {/* Bottom Right */}
         <div className="col-start-1 row-start-2 self-end sm:col-start-2 sm:row-start-3 sm:flex sm:items-end sm:justify-end sm:text-right">
