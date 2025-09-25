@@ -3,6 +3,7 @@ import Image from "next/image";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
 import { Button } from "@/components/ui/button";
 import { Download } from "lucide-react";
+import { SkillsMarquee } from "./skills-marquee";
 
 export function AboutSection() {
   const aboutImage = PlaceHolderImages.find((img) => img.id === "about-portrait");
@@ -116,14 +117,8 @@ export function AboutSection() {
         </section>
 
         <section className="mb-24">
-          <h2 className="font-headline text-4xl font-bold mb-8">Skills</h2>
-          <div className="flex flex-wrap gap-3">
-            {skills.map(skill => (
-              <div key={skill} className="bg-secondary text-secondary-foreground rounded-full px-4 py-2 text-sm font-medium">
-                {skill}
-              </div>
-            ))}
-          </div>
+          <h2 className="font-headline text-4xl font-bold mb-12 text-center">My Skills</h2>
+          <SkillsMarquee skills={skills} />
         </section>
 
         <section className="mb-24">
