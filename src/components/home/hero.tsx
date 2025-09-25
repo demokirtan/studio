@@ -1,9 +1,10 @@
+
 "use client";
 
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import React, { useRef } from "react";
-import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
+import React from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 
@@ -33,37 +34,17 @@ export function Hero() {
     }
   };
   
-  const ref = useRef<HTMLDivElement>(null);
-  
-  const mouseX = useMotionValue(0);
-  const mouseY = useMotionValue(0);
+  const targetRef = React.useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: targetRef,
+    offset: ["start start", "end start"],
+  });
 
-  const springConfig = { damping: 15, stiffness: 100 };
-
-  const rotateX = useSpring(useTransform(mouseY, [0, 1], [-6, 6]), springConfig);
-  const rotateY = useSpring(useTransform(mouseX, [0, 1], [-6, 6]), springConfig);
-  const translateX = useSpring(useTransform(mouseX, [0, 1], [-15, 15]), springConfig);
-  const translateY = useSpring(useTransform(mouseY, [0, 1], [-10, 10]), springConfig);
-
-
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!ref.current) return;
-    const { left, top, width, height } = ref.current.getBoundingClientRect();
-    mouseX.set((e.clientX - left) / width);
-    mouseY.set((e.clientY - top) / height);
-  };
-  
-  const handleMouseLeave = () => {
-    mouseX.set(0.5);
-    mouseY.set(0.5);
-  };
-
+  const y = useTransform(scrollYProgress, [0, 1], ["0%", "-50%"]);
 
   return (
     <div 
-      ref={ref}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
+      ref={targetRef}
       className="relative min-h-dvh w-full fade-in background-grid"
     >
       <div className="absolute inset-0 bg-gradient-to-br from-background via-transparent to-background" />
@@ -105,13 +86,7 @@ export function Hero() {
         {/* Bottom Left */}
         <motion.div 
           className="col-span-2 row-start-3 self-end md:col-span-1"
-          style={{ 
-            rotateX, 
-            rotateY,
-            translateX,
-            translateY,
-            transformStyle: "preserve-3d" 
-          }}
+          style={{ y }}
         >
           <h1 className="font-headline text-5xl font-bold uppercase leading-none tracking-tighter md:text-7xl">
             KIRTAN KALATHIYA
