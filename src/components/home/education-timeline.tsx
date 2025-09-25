@@ -1,9 +1,8 @@
 
-
 'use client';
 
 import React, { useRef } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { motion, useScroll, useTransform, useSpring, type MotionValue } from 'framer-motion';
 import { cn } from '@/lib/utils';
 import { useIsMobile } from '@/hooks/use-mobile';
 
@@ -46,13 +45,30 @@ const journeyData = [
     },
 ];
 
-const Milestone = ({ item, isMobile, scrollYProgress }: { item: typeof journeyData[0], isMobile: boolean, scrollYProgress: any }) => {
-    const isEven = journeyData.indexOf(item) % 2 === 0;
-    
-    // Determine the opacity animation range based on the item's index
-    const startOpacity = (journeyData.indexOf(item) * 0.2);
+const JourneyNode = ({
+  item,
+  isMobile,
+  scrollYProgress,
+  onMouseMove,
+  handleMouseLeave,
+  rotateX,
+  rotateY,
+}: {
+  item: typeof journeyData[0];
+  isMobile: boolean;
+  scrollYProgress: MotionValue<number>;
+  onMouseMove: (e: React.MouseEvent<HTMLDivElement>) => void;
+  handleMouseLeave: () => void;
+  rotateX: MotionValue<number>;
+  rotateY: MotionValue<number>;
+}) => {
+    const itemIndex = journeyData.indexOf(item);
+    const isEven = itemIndex % 2 === 0;
+
+    const startOpacity = itemIndex * 0.2;
     const endOpacity = startOpacity + 0.2;
     const opacity = useTransform(scrollYProgress, [startOpacity, endOpacity], [0, 1]);
+    const y = useTransform(scrollYProgress, [startOpacity, endOpacity], [50, 0]);
 
     const position = isMobile ? item.mobilePosition : item.position;
 
@@ -64,14 +80,24 @@ const Milestone = ({ item, isMobile, scrollYProgress }: { item: typeof journeyDa
                 left: isMobile ? position.left : (isEven ? position.left : undefined),
                 right: isMobile ? undefined : (isEven ? undefined : '15%'),
                 opacity: opacity,
-                textAlign: isMobile ? 'left' : (isEven ? 'left' : 'right'),
+                y: y,
+                rotateX,
+                rotateY,
             }}
-            className="w-full sm:w-2/5"
+            onMouseMove={onMouseMove}
+            onMouseLeave={handleMouseLeave}
+            className="w-full sm:w-2/5 will-change-transform"
         >
-            <p className="text-muted-foreground font-mono text-sm">{item.year}</p>
-            <h3 className="text-lg sm:text-xl font-bold mt-1 text-foreground">{item.degree}</h3>
-            <p className="text-muted-foreground text-sm sm:text-base">{item.institution}</p>
-            {item.grade && <p className="text-muted-foreground font-mono text-xs mt-1">{item.grade}</p>}
+            <motion.div 
+                className="bg-card/50 backdrop-blur-sm border border-border/20 rounded-lg p-4 shadow-lg"
+                initial={{ y: 0 }}
+                whileHover={{ y: -8 }}
+            >
+                <p className="text-muted-foreground font-mono text-sm">{item.year}</p>
+                <h3 className="text-lg sm:text-xl font-bold mt-1 text-foreground">{item.degree}</h3>
+                <p className="text-muted-foreground text-sm sm:text-base">{item.institution}</p>
+                {item.grade && <p className="text-muted-foreground font-mono text-xs mt-1">{item.grade}</p>}
+            </motion.div>
         </motion.div>
     );
 };
@@ -88,6 +114,27 @@ export function EducationTimeline({ experienceRef }: { experienceRef: React.RefO
 
     const pathLength = useTransform(scrollYProgress, [0.05, 0.8], [0, 1]);
 
+    const rotateX = useSpring(useTransform(scrollYProgress, [0, 1], [15, 0]), { stiffness: 400, damping: 90 });
+    const rotateY = useSpring(useTransform(scrollYProgress, [0, 1], [15, 0]), { stiffness: 400, damping: 90 });
+
+    const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+        const rect = e.currentTarget.getBoundingClientRect();
+        const { width, height } = rect;
+        const mouseX = e.clientX - rect.left;
+        const mouseY = e.clientY - rect.top;
+
+        const xPct = mouseX / width - 0.5;
+        const yPct = mouseY / height - 0.5;
+        
+        rotateX.set(-yPct * 20);
+        rotateY.set(xPct * 20);
+    }
+    
+    const handleMouseLeave = () => {
+        rotateX.set(0);
+        rotateY.set(0);
+    }
+
     const desktopPath = "M 500 0 V 150 Q 500 250 350 350 T 650 550 Q 650 650 500 750 V 900 Q 500 1000 350 1100 T 650 1300 V 1400";
     const mobilePath = "M 50 0 V 1400";
     const path = isMobile ? mobilePath : desktopPath;
@@ -95,23 +142,10 @@ export function EducationTimeline({ experienceRef }: { experienceRef: React.RefO
 
     return (
         <div ref={timelineRef} className="relative w-full" style={{ height: '140vh' }}>
-            <div className="sticky top-0 h-dvh w-full">
+            <div className="sticky top-0 h-dvh w-full" style={{ perspective: '1000px' }}>
                 <h2 className="font-headline text-3xl sm:text-4xl font-bold pt-16 text-center z-20 relative">My Journey</h2>
                 
                 <svg width="100%" height="100%" viewBox={isMobile ? "0 0 100 1400" : "0 0 1000 1400"} preserveAspectRatio="none" className="absolute top-0 left-0">
-                    <defs>
-                        <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
-                            <feGaussianBlur stdDeviation="5" result="coloredBlur" />
-                            <feMerge>
-                                <feMergeNode in="coloredBlur" />
-                                <feMergeNode in="SourceGraphic" />
-                            </feMerge>
-                        </filter>
-                         <linearGradient id="gradient" x1="0%" y1="0%" x2="0%" y2="100%">
-                            <stop offset="0%" stopColor="hsl(var(--primary) / 0)" />
-                            <stop offset="100%" stopColor="hsl(var(--primary))" />
-                        </linearGradient>
-                    </defs>
                     <motion.path
                         key={pathKey}
                         d={path}
@@ -123,16 +157,24 @@ export function EducationTimeline({ experienceRef }: { experienceRef: React.RefO
                         key={`${pathKey}-animated`}
                         d={path}
                         fill="none"
-                        stroke="url(#gradient)"
+                        stroke="hsl(var(--primary))"
                         strokeWidth="2.5"
                         style={{ pathLength }}
-                        filter="url(#glow)"
                     />
                 </svg>
 
                 <div className="relative h-full w-full">
                     {journeyData.map((item, index) => (
-                        <Milestone key={index} item={item} isMobile={isMobile ?? false} scrollYProgress={scrollYProgress} />
+                        <JourneyNode 
+                            key={index} 
+                            item={item} 
+                            isMobile={isMobile ?? false} 
+                            scrollYProgress={scrollYProgress}
+                            onMouseMove={handleMouseMove}
+                            handleMouseLeave={handleMouseLeave}
+                            rotateX={rotateX}
+                            rotateY={rotateY}
+                        />
                     ))}
                 </div>
             </div>
