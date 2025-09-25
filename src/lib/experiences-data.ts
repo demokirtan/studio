@@ -4,22 +4,17 @@ export type Experience = {
     company: string;
     period: string;
     imageId: string;
+    description?: string;
   };
   
   export const experiences: Experience[] = [
     {
       id: "1",
-      title: "Wood-work",
-      company: "Future—Three",
-      period: "2023–Present",
+      title: "SEO Intern",
+      company: "CoreNet Tech",
+      period: "08/2025–Present",
       imageId: "experience-1",
-    },
-    {
-      id: "2",
-      title: "Futuristic architecture",
-      company: "Future—Three",
-      period: "2022–2023",
-      imageId: "experience-2",
-    },
+      description: "Assisted in optimizing websites for search engines, focusing on both onpage and off-page SEO strategies. Conducted keyword research and analysis to improve website visibility and search rankings. Utilized tools like Google Search Console and Yoast SEO to monitor performance and implement improvements."
+    }
   ];
     

@@ -42,7 +42,7 @@ export function Hero() {
             onClick={(e) => handleScroll(e, "/")}
             className="font-headline text-2xl font-bold uppercase tracking-tighter transition-colors hover:text-muted-foreground"
           >
-            Kirtan
+            KIRTAN
           </Link>
         </div>
 
@@ -50,7 +50,7 @@ export function Hero() {
         <div className="col-start-1 row-start-2 -mt-20 flex flex-col items-start self-start text-left sm:col-start-2 sm:row-start-1 sm:mt-0 sm:items-end sm:text-right">
           <div className="flex items-center gap-4">
             <span className="font-mono text-sm text-muted-foreground">
-              ■ Surat, IN
+              ■ Surat, Gujarat, India
             </span>
           </div>
           <nav className="mt-4 flex flex-col items-start space-y-1 text-sm font-medium md:flex-row md:items-center md:space-x-4 md:space-y-0">
@@ -72,10 +72,10 @@ export function Hero() {
         {/* Bottom Left */}
         <div className="col-span-2 row-start-3 self-end md:col-span-1">
           <h1 className="font-headline text-5xl font-bold uppercase leading-none tracking-tighter md:text-7xl">
-            Born to Create
+            KIRTAN KALATHIYA
           </h1>
           <h2 className="font-body text-lg text-muted-foreground">
-            Brand. Design. Development.
+            Web Designer & Developer
           </h2>
         </div>
 

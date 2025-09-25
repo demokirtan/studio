@@ -13,7 +13,7 @@ const fontOswald = Oswald({
 });
 
 export const metadata: Metadata = {
-  title: "Kirtan Kalathiya - Web Designer & Developer",
+  title: "Kirtan Kalathiya",
   description: "Portfolio of Kirtan Kalathiya, a web designer and developer from Surat, India.",
 };
 

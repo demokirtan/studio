@@ -1,5 +1,7 @@
 import Image from "next/image";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
+import { Button } from "@/components/ui/button";
+import { Download } from "lucide-react";
 
 export function AboutSection() {
   const aboutImage = PlaceHolderImages.find((img) => img.id === "about-portrait");
@@ -23,9 +25,9 @@ export function AboutSection() {
   }
   
   const skills = [
-    "C", "C++", "Java", "Python", "JavaScript", "C#",
-    "SQL", "React.js", "Node.js", "ASP.Net", "PHP",
-    "MongoDB", "MySQL", "Vercel", "App Development", "Image Processing"
+    "C", "C++", "Java", "Python", "JavaScript", "C#", "SQL",
+    "React.js", "Node.js", "ASP.Net", "PHP", "MySQL", "MongoDB",
+    "Vercel", "App Development", "Image Processing"
   ];
 
   const education = [
@@ -37,19 +39,36 @@ export function AboutSection() {
     {
       year: "2021 - 2024",
       degree: "Bachelor of Science (Information Technology)",
-      institution: "UKA TARSADIA UNIVERSITY"
+      institution: "UKA TARSADIA UNIVERSITY",
+      grade: "CGPA 5.47"
     },
     {
       year: "2021",
       degree: "Class XII - HSC",
-      institution: "BAPS SWAMINARAYAN VIDYAMANDIR, SARANGPUR"
+      institution: "BAPS SWAMINARAYAN VIDYAMANDIR, SARANGPUR",
+      grade: "60.93%"
     },
     {
       year: "2019",
       degree: "Class X - SSC",
-      institution: "BAPS SWAMINARAYAN VIDYAMANDIR, SARANGPUR"
+      institution: "BAPS SWAMINARAYAN VIDYAMANDIR, SARANGPUR",
+      grade: "69.33%"
     }
-  ]
+  ];
+
+  const certificates = [
+    {
+      year: "2023",
+      name: "Python Fundamentals for Beginners",
+      issuer: "Great Learning"
+    }
+  ];
+
+  const interests = [
+    "Cinematography & Content Creation",
+    "Video Editing & Motion Graphics",
+    "Acting & Performance Arts"
+  ];
 
   return (
     <div id="about" className="fade-in">
@@ -77,7 +96,7 @@ export function AboutSection() {
             </div>
             <div className="md:col-span-2 space-y-8">
                 <div className="space-y-4">
-                    <h2 className="text-4xl font-bold font-headline">Kirtan Kalathiya</h2>
+                    <h2 className="text-4xl font-bold font-headline">KIRTAN KALATHIYA</h2>
                     <p className="text-muted-foreground text-lg">
                       WEB DESIGNER + DEVELOPER
                     </p>
@@ -87,6 +106,11 @@ export function AboutSection() {
                   My name is Kirtan Kalathiya, a web designer and developer from Surat, India. I'm a passionate programmer and quick learner with experience in Node.js, React, Bootstrap, MongoDB, and MySQL. As an SEO fresher, I have basic knowledge of on-page and off-page SEO, keyword research, and tools like Google Search Console and Yoast SEO. I'm eager to build websites that are both user-friendly and search engine optimized.
                   </p>
                 </div>
+                <Button size="lg" asChild>
+                  <a href="/resume.pdf" download="Kirtan_Kalathiya_Resume.pdf">
+                    Download Resume <Download className="ml-2"/>
+                  </a>
+                </Button>
             </div>
         </section>
 
@@ -101,19 +125,46 @@ export function AboutSection() {
           </div>
         </section>
 
-        <section>
+        <section className="mb-24">
           <h2 className="font-headline text-4xl font-bold mb-8">Education</h2>
           <div className="space-y-6">
             {education.map(edu => (
-              <div key={edu.degree} className="flex flex-col sm:flex-row justify-between sm:items-center">
+              <div key={edu.degree} className="flex flex-col sm:flex-row justify-between sm:items-start">
                 <div>
                   <h3 className="text-xl font-bold">{edu.degree}</h3>
                   <p className="text-muted-foreground">{edu.institution}</p>
                 </div>
-                <p className="text-muted-foreground font-mono text-sm mt-2 sm:mt-0">{edu.year}</p>
+                <div className="text-right">
+                  <p className="text-muted-foreground font-mono text-sm mt-2 sm:mt-0">{edu.year}</p>
+                  {edu.grade && <p className="text-muted-foreground font-mono text-sm">{edu.grade}</p>}
+                </div>
               </div>
             ))}
           </div>
+        </section>
+
+        <section className="mb-24">
+          <h2 className="font-headline text-4xl font-bold mb-8">Certificates</h2>
+          <div className="space-y-6">
+            {certificates.map(cert => (
+              <div key={cert.name} className="flex flex-col sm:flex-row justify-between sm:items-center">
+                <div>
+                  <h3 className="text-xl font-bold">{cert.name}</h3>
+                  <p className="text-muted-foreground">{cert.issuer}</p>
+                </div>
+                <p className="text-muted-foreground font-mono text-sm mt-2 sm:mt-0">{cert.year}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <section>
+          <h2 className="font-headline text-4xl font-bold mb-8">Interests</h2>
+          <ul className="list-disc list-inside space-y-2 text-lg text-muted-foreground">
+            {interests.map(interest => (
+              <li key={interest}>{interest}</li>
+            ))}
+          </ul>
         </section>
       </div>
     </div>

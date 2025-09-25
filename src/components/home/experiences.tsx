@@ -72,8 +72,9 @@ function Experience({
       </div>
       <motion.div style={{ y }} className={cn("text-white", isOdd && "md:order-first")}>
         <h3 className="font-headline text-4xl font-bold">{experience.title}</h3>
-        <p className="mt-4 text-lg text-muted-foreground">{experience.company}</p>
-        <p className="mt-2 text-sm text-muted-foreground/80">{experience.period}</p>
+        <p className="mt-2 text-lg text-muted-foreground">{experience.company}</p>
+        <p className="mt-1 text-sm text-muted-foreground/80">{experience.period}</p>
+        <p className="mt-4 text-muted-foreground">{experience.description}</p>
       </motion.div>
     </section>
   );
