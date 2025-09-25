@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useRef } from 'react';
@@ -5,16 +6,10 @@ import { motion, useScroll, useTransform } from 'framer-motion';
 
 const educationData = [
     {
-      year: "2024 - Present",
-      degree: "Master of Science (IT)",
-      institution: "UKA TARSADIA UNIVERSITY",
-      grade: ""
-    },
-    {
-      year: "2021 - 2024",
-      degree: "Bachelor of Science (IT)",
-      institution: "UKA TARSADIA UNIVERSITY",
-      grade: "CGPA 5.47"
+      year: "2019",
+      degree: "Class X - SSC",
+      institution: "BAPS SWAMINARAYAN VIDYAMANDIR, SARANGPUR",
+      grade: "69.33%"
     },
     {
       year: "2021",
@@ -23,10 +18,16 @@ const educationData = [
       grade: "60.93%"
     },
     {
-      year: "2019",
-      degree: "Class X - SSC",
-      institution: "BAPS SWAMINARAYAN VIDYAMANDIR, SARANGPUR",
-      grade: "69.33%"
+      year: "2021 - 2024",
+      degree: "Bachelor of Science (IT)",
+      institution: "UKA TARSADIA UNIVERSITY",
+      grade: "CGPA 5.47"
+    },
+    {
+      year: "2024 - Present",
+      degree: "Master of Science (IT)",
+      institution: "UKA TARSADIA UNIVERSITY",
+      grade: ""
     }
   ];
 
