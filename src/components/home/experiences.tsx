@@ -9,6 +9,7 @@ import {
 } from "framer-motion";
 import { experiences } from "@/lib/experiences-data";
 import { ImagePlaceholder, PlaceHolderImages } from "@/lib/placeholder-images";
+import { cn } from "@/lib/utils";
 
 function useParallax(value: any, distance: any) {
   return useTransform(value, [0, 1], [-distance, distance]);
@@ -17,9 +18,11 @@ function useParallax(value: any, distance: any) {
 function Experience({
   experience,
   image,
+  index,
 }: {
   experience: (typeof experiences)[0];
   image?: ImagePlaceholder;
+  index: number;
 }) {
   const ref = useRef(null);
   const { scrollYProgress } = useScroll({ target: ref });
@@ -41,10 +44,17 @@ function Experience({
     }
   }
 
+  const isOdd = index % 2 !== 0;
 
   return (
     <section className="container mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 items-center py-24">
-      <div ref={ref} className="relative aspect-[4/3] overflow-hidden rounded-lg shadow-lg">
+      <div 
+        ref={ref} 
+        className={cn(
+          "relative aspect-[4/3] overflow-hidden rounded-lg shadow-lg",
+          isOdd && "md:order-last"
+        )}
+      >
         {image ? (
             <Image
               src={image.imageUrl}
@@ -60,7 +70,7 @@ function Experience({
             </div>
         )}
       </div>
-      <motion.div style={{ y }} className="text-white">
+      <motion.div style={{ y }} className={cn("text-white", isOdd && "md:order-first")}>
         <h3 className="font-headline text-4xl font-bold">{experience.title}</h3>
         <p className="mt-4 text-lg text-muted-foreground">{experience.company}</p>
         <p className="mt-2 text-sm text-muted-foreground/80">{experience.period}</p>
@@ -87,11 +97,12 @@ export function Experiences() {
                 Experience
             </h2>
         </div>
-        {experiences.map((experience) => (
+        {experiences.map((experience, index) => (
           <Experience 
             key={experience.id} 
             experience={experience} 
-            image={imageMap[experience.imageId]} 
+            image={imageMap[experience.imageId]}
+            index={index}
           />
         ))}
       </div>
