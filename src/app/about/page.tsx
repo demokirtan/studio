@@ -10,16 +10,44 @@ export default function AboutPage() {
   if (aboutImage?.imageUrl) {
     try {
       const url = new URL(aboutImage.imageUrl);
-      const widthParam = url.searchParams.get("w");
-      if (widthParam && !isNaN(parseInt(widthParam))) {
-        width = parseInt(widthParam, 10);
-      }
-      height = width * 1.25; // Maintain aspect ratio
+      const parts = url.pathname.split('/');
+      const w = parseInt(parts[parts.length - 2], 10);
+      const h = parseInt(parts[parts.length - 1], 10);
+      if (!isNaN(w)) width = w;
+      if (!isNaN(h)) height = h;
     } catch (e) {
       // Keep default values if URL parsing fails
     }
   }
 
+  const skills = [
+    "C", "C++", "Java", "Python", "JavaScript", "C#",
+    "SQL", "React.js", "Node.js", "ASP.Net", "PHP",
+    "MongoDB", "MySQL", "Vercel", "App Development", "Image Processing"
+  ];
+
+  const education = [
+    {
+      year: "2024 - Present",
+      degree: "Master of Science (Information Technology)",
+      institution: "UKA TARSADIA UNIVERSITY"
+    },
+    {
+      year: "2021 - 2024",
+      degree: "Bachelor of Science (Information Technology)",
+      institution: "UKA TARSADIA UNIVERSITY"
+    },
+    {
+      year: "2021",
+      degree: "Class XII - HSC",
+      institution: "BAPS SWAMINARAYAN VIDYAMANDIR, SARANGPUR"
+    },
+    {
+      year: "2019",
+      degree: "Class X - SSC",
+      institution: "BAPS SWAMINARAYAN VIDYAMANDIR, SARANGPUR"
+    }
+  ]
 
   return (
     <div className="fade-in">
@@ -30,7 +58,7 @@ export default function AboutPage() {
           </h1>
         </section>
 
-        <section className="grid grid-cols-1 md:grid-cols-3 gap-12 items-start">
+        <section className="grid grid-cols-1 md:grid-cols-3 gap-12 items-start mb-24">
             <div className="md:col-span-1 relative h-auto w-full flex items-center justify-center">
                 {aboutImage && (
                 <div className="overflow-hidden rounded-lg shadow-lg w-full">
@@ -59,6 +87,33 @@ export default function AboutPage() {
                 </div>
             </div>
         </section>
+
+        <section className="mb-24">
+          <h2 className="font-headline text-4xl font-bold mb-8">Skills</h2>
+          <div className="flex flex-wrap gap-3">
+            {skills.map(skill => (
+              <div key={skill} className="bg-secondary text-secondary-foreground rounded-full px-4 py-2 text-sm font-medium">
+                {skill}
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <section>
+          <h2 className="font-headline text-4xl font-bold mb-8">Education</h2>
+          <div className="space-y-6">
+            {education.map(edu => (
+              <div key={edu.degree} className="flex flex-col sm:flex-row justify-between sm:items-center">
+                <div>
+                  <h3 className="text-xl font-bold">{edu.degree}</h3>
+                  <p className="text-muted-foreground">{edu.institution}</p>
+                </div>
+                <p className="text-muted-foreground font-mono text-sm mt-2 sm:mt-0">{edu.year}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
       </div>
     </div>
   );

@@ -15,12 +15,11 @@ export function ProjectCard({ project, image }: ProjectCardProps) {
   if (image) {
     try {
       const url = new URL(image.imageUrl);
-      const widthParam = url.searchParams.get("w");
-      if (widthParam) {
-        width = parseInt(widthParam, 10);
-      }
-      // Assuming a 4:3 aspect ratio if height isn't available
-      height = width * (3 / 4);
+      const parts = url.pathname.split('/');
+      const w = parseInt(parts[parts.length - 2], 10);
+      const h = parseInt(parts[parts.length - 1], 10);
+      if (!isNaN(w)) width = w;
+      if (!isNaN(h)) height = h;
     } catch (e) {
       // Keep default values if URL parsing fails
     }
