@@ -1,10 +1,9 @@
 'use client';
 
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { cn } from '@/lib/utils';
 import { useIsMobile } from '@/hooks/use-mobile';
-import { PlaceHolderImages } from '@/lib/placeholder-images';
 
 const journeyData = [
     {
@@ -35,14 +34,16 @@ const journeyData = [
         institution: "UKA TARSADIA UNIVERSITY",
         grade: "SGPA 7.59"
     },
-    {
-        type: 'experience',
-        title: 'SEO Intern',
-        company: 'CoreNet Tech',
-        period: '08/2025–Present',
-        description: 'Assisted in optimizing websites for search engines, focusing on both on-page and off-page SEO strategies. Conducted keyword research and analysis to improve website visibility and search rankings. Used Google Search Console & Yoast SEO to monitor performance.'
-    },
 ];
+
+const experienceData = {
+    type: 'experience',
+    title: 'SEO Intern',
+    company: 'CoreNet Tech',
+    period: '08/2025–Present',
+    description: 'Assisted in optimizing websites for search engines, focusing on both on-page and off-page SEO strategies. Conducted keyword research and analysis to improve website visibility and search rankings. Used Google Search Console & Yoast SEO to monitor performance.'
+};
+
 
 const JourneyNode = ({ item, index, isMobile }: { item: (typeof journeyData)[0], index: number, isMobile: boolean }) => {
     const isEven = index % 2 === 0;
@@ -62,8 +63,6 @@ const JourneyNode = ({ item, index, isMobile }: { item: (typeof journeyData)[0],
         if (!cardRef.current) return;
         cardRef.current.style.transform = 'perspective(1000px) rotateY(0) rotateX(0) scale3d(1, 1, 1)';
     };
-
-    const isEducation = item.type === 'education';
 
     return (
         <motion.div
@@ -91,32 +90,67 @@ const JourneyNode = ({ item, index, isMobile }: { item: (typeof journeyData)[0],
                     isMobile ? "w-full ml-8" : "w-[calc(50%-2rem)]"
                 )}
             >
-                {isEducation ? (
-                    <>
-                        <p className="text-muted-foreground font-mono text-sm">{item.year}</p>
-                        <h3 className="text-lg sm:text-xl font-bold mt-1 text-foreground">{item.degree}</h3>
-                        <p className="text-muted-foreground text-sm sm:text-base">{item.institution}</p>
-                        {item.grade && <p className="text-muted-foreground font-mono text-xs mt-1">{item.grade}</p>}
-                    </>
-                ) : (
-                     <div className="relative">
-                        <p className="text-muted-foreground font-mono text-sm">{item.period}</p>
-                        <h3 className="text-lg sm:text-xl font-bold mt-1 text-foreground">{item.title}</h3>
-                        <p className="text-muted-foreground text-sm sm:text-base">{item.company}</p>
-                        <motion.div
-                            className="mt-4 text-sm text-muted-foreground/80 overflow-hidden"
-                            initial={{ height: 0 }}
-                            animate={{ height: isHovered ? 'auto' : 0 }}
-                            transition={{ duration: 0.4, ease: "easeInOut" }}
-                        >
-                           <p>{item.description}</p>
-                        </motion.div>
-                    </div>
-                )}
+                <p className="text-muted-foreground font-mono text-sm">{item.year}</p>
+                <h3 className="text-lg sm:text-xl font-bold mt-1 text-foreground">{item.degree}</h3>
+                <p className="text-muted-foreground text-sm sm:text-base">{item.institution}</p>
+                {item.grade && <p className="text-muted-foreground font-mono text-xs mt-1">{item.grade}</p>}
             </div>
         </motion.div>
     );
 };
+
+const ExperienceNode = ({ item, isMobile }: { item: typeof experienceData, isMobile: boolean }) => {
+    const cardRef = React.useRef<HTMLDivElement>(null);
+    const [isHovered, setIsHovered] = useState(false);
+
+    const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+        if (!cardRef.current) return;
+        const { clientX, clientY, currentTarget } = e;
+        const { left, top, width, height } = currentTarget.getBoundingClientRect();
+        const x = (clientX - left - width / 2) / 10;
+        const y = (clientY - top - height / 2) / 10;
+        cardRef.current.style.transform = `perspective(1000px) rotateY(${x}deg) rotateX(${-y}deg) scale3d(1.05, 1.05, 1.05)`;
+    };
+
+    const handleMouseLeave = () => {
+        if (!cardRef.current) return;
+        cardRef.current.style.transform = 'perspective(1000px) rotateY(0) rotateX(0) scale3d(1, 1, 1)';
+    };
+
+    return (
+        <motion.div
+            className="relative w-full flex justify-center mt-16"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{ duration: 0.8, delay: 0.5 }}
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
+        >
+             <div
+                ref={cardRef}
+                onMouseMove={handleMouseMove}
+                onMouseLeave={handleMouseLeave}
+                className={cn(
+                    "p-6 rounded-lg shadow-lg bg-card/50 backdrop-blur-sm border border-border/20 transition-transform duration-300 ease-out",
+                    isMobile ? "w-full" : "w-3/4 max-w-2xl"
+                )}
+            >
+                <div className="relative">
+                    <p className="text-muted-foreground font-mono text-sm">{item.period}</p>
+                    <h3 className="text-lg sm:text-xl font-bold mt-1 text-foreground">{item.title}</h3>
+                    <p className="text-muted-foreground text-sm sm:text-base">{item.company}</p>
+                    <motion.div
+                        className="mt-4 text-sm text-muted-foreground/80"
+                        initial={{ height: 'auto' }}
+                    >
+                       <p>{item.description}</p>
+                    </motion.div>
+                </div>
+            </div>
+        </motion.div>
+    )
+}
 
 export function EducationTimeline() {
     const isMobile = useIsMobile();
@@ -192,12 +226,14 @@ export function EducationTimeline() {
                     <JourneyNode key={index} item={item} index={index} isMobile={isMobile} />
                 ))}
             </div>
-
+            
             <div className="relative flex justify-center items-center h-96 mt-48">
                  <h2 className="font-headline text-6xl md:text-8xl lg:text-9xl font-bold tracking-tighter text-transparent bg-clip-text bg-gradient-to-b from-foreground to-muted-foreground/80 leading-none">
                   Dream. Make. Change.
               </h2>
             </div>
+
+            <ExperienceNode item={experienceData} isMobile={isMobile} />
         </div>
     );
 }
