@@ -1,18 +1,14 @@
 "use client";
 
 import Image from "next/image";
-import { PlaceHolderImages, type ImagePlaceholder } from "@/lib/placeholder-images";
+import { PlaceHolderImages } from "@/lib/placeholder-images";
 import { Button } from "@/components/ui/button";
 import { Download } from "lucide-react";
 import { SkillTabs } from "./skill-tabs";
 import { EducationTimeline } from "./education-timeline";
-import { ExperienceNode } from "./education-timeline";
-import { experiences } from "@/lib/experiences-data";
-import { useIsMobile } from "@/hooks/use-mobile";
 
 export function AboutSection() {
   const aboutImage = PlaceHolderImages.find((img) => img.id === "about-portrait");
-  const isMobile = useIsMobile();
   
   let width = 800;
   let height = 1000;
@@ -83,23 +79,11 @@ export function AboutSection() {
           </section>
         </div>
       </div>
-      <div id="journey" className="relative">
-        <div className="relative z-10 container mx-auto">
-           <EducationTimeline />
-        </div>
-      </div>
-      <div className="relative bg-background background-grid">
+      <div id="journey" className="relative background-grid">
          <div 
-          className="absolute inset-0 bg-gradient-to-br from-background via-transparent to-background"
+          className="absolute inset-0 bg-gradient-to-br from-background via-transparent to-background z-0"
         />
-        <div className="relative z-10 container mx-auto">
-          <div className="relative flex justify-center items-center h-96">
-            <h2 className="font-headline text-6xl md:text-8xl lg:text-9xl font-bold tracking-tighter text-transparent bg-clip-text bg-gradient-to-b from-foreground to-muted-foreground/80 leading-none">
-              Dream. Make. Change.
-            </h2>
-          </div>
-          <ExperienceNode item={experiences[0]} isMobile={isMobile} />
-        </div>
+        <EducationTimeline />
       </div>
     </>
   );

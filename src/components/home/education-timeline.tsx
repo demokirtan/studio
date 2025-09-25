@@ -1,12 +1,11 @@
 'use client';
 
-import React, { useRef, useState } from 'react';
+import React, { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { cn } from '@/lib/utils';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { experiences } from '@/lib/experiences-data';
 import type { Experience } from '@/lib/experiences-data';
-
 
 const journeyData = [
     {
@@ -60,7 +59,7 @@ const JourneyNode = ({ item, index, isMobile }: { item: (typeof journeyData)[0],
     return (
         <motion.div
             className={cn(
-                "relative flex items-center w-full group",
+                "relative flex items-center w-full group h-48",
                 isMobile ? 'justify-start' : (isEven ? 'justify-start' : 'justify-end')
             )}
             initial={{ opacity: 0, x: isMobile ? -20 : (isEven ? -20 : 20) }}
@@ -68,8 +67,8 @@ const JourneyNode = ({ item, index, isMobile }: { item: (typeof journeyData)[0],
             viewport={{ once: true, amount: 0.5 }}
             transition={{ duration: 0.8 }}
         >
-            <div className={cn('absolute h-4 w-4 rounded-full border-2 border-primary bg-background z-10 transition-all duration-300 group-hover:scale-125 group-hover:shadow-[0_0_15px_5px] group-hover:shadow-primary/50',
-                isMobile ? 'left-0 -translate-x-1/2' : 'left-1/2 -translate-x-1/2'
+            <div className={cn('absolute h-4 w-4 rounded-full border-2 border-primary bg-background z-20 transition-all duration-300 group-hover:scale-125 group-hover:shadow-[0_0_15px_5px] group-hover:shadow-primary/50',
+                isMobile ? 'left-[1.5px] -translate-x-1/2' : 'left-1/2 -translate-x-1/2'
             )} />
 
             <div
@@ -77,7 +76,7 @@ const JourneyNode = ({ item, index, isMobile }: { item: (typeof journeyData)[0],
                 onMouseMove={handleMouseMove}
                 onMouseLeave={handleMouseLeave}
                 className={cn(
-                    "p-6 rounded-lg shadow-lg bg-card/50 backdrop-blur-sm border border-border/20 transition-transform duration-300 ease-out",
+                    "p-6 rounded-lg shadow-lg bg-card/50 backdrop-blur-sm border border-border/20 transition-transform duration-300 ease-out z-20",
                     isMobile ? "w-full ml-8" : "w-[calc(50%-2rem)]"
                 )}
             >
@@ -109,8 +108,8 @@ export const ExperienceNode = ({ item, isMobile }: { item: Experience, isMobile:
 
     return (
         <motion.div
-            className="relative w-full flex justify-center pb-24"
-            initial={{ opacity: 0, y: 20 }}
+            className="relative w-full flex justify-center pb-24 h-96 items-center"
+            initial={{ opacity: 0, y: 50 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.3 }}
             transition={{ duration: 0.8, delay: 0.5 }}
@@ -120,7 +119,7 @@ export const ExperienceNode = ({ item, isMobile }: { item: Experience, isMobile:
                 onMouseMove={handleMouseMove}
                 onMouseLeave={handleMouseLeave}
                 className={cn(
-                    "p-6 rounded-lg shadow-lg bg-card/50 backdrop-blur-sm border border-border/20 transition-transform duration-300 ease-out",
+                    "p-6 rounded-lg shadow-lg bg-card/50 backdrop-blur-sm border border-border/20 transition-transform duration-300 ease-out z-20",
                     isMobile ? "w-full" : "w-3/4 max-w-2xl"
                 )}
             >
@@ -142,64 +141,68 @@ export function EducationTimeline() {
     const ref = useRef<HTMLDivElement>(null);
     const { scrollYProgress } = useScroll({
         target: ref,
-        offset: ['start center', 'end center'],
+        offset: ["start start", "end end"],
     });
 
-    const pathLength = useTransform(scrollYProgress, [0, 0.95], [0, 1]);
-
-    const desktopPath = "M 500 0 Q 500 150 350 200 T 500 400 Q 500 550 650 600 T 500 800";
-    const mobilePath = "M 0 0 L 0 800";
+    const pathLength = useTransform(scrollYProgress, [0.05, 0.95], [0, 1]);
+    
+    // Adjusted Path for a more prominent S-curve
+    const desktopPath = "M 500 0 V 150 Q 500 250 350 350 T 650 550 Q 650 650 500 750 V 900 Q 500 1000 350 1100 T 650 1300 V 1800";
+    const mobilePath = "M 3 0 V 2000";
 
     const path = isMobile ? mobilePath : desktopPath;
     const pathKey = isMobile ? 'mobile' : 'desktop';
 
     return (
-        <div ref={ref} className="relative max-w-4xl mx-auto py-24 px-4 min-h-[140vh]">
-             <h2 className="font-headline text-3xl sm:text-4xl font-bold mb-16 text-center">My Journey</h2>
-            <div className="absolute top-0 h-full w-full" style={{ perspective: '1000px' }}>
-                <motion.div
-                    className="absolute inset-0"
-                >
-                    <svg width="100%" height="100%" viewBox={isMobile ? "0 0 50 800" : "0 0 1000 800"} preserveAspectRatio="none">
-                        <defs>
-                            <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
-                                <feGaussianBlur stdDeviation="4" result="coloredBlur" />
-                                <feMerge>
-                                    <feMergeNode in="coloredBlur" />
-                                    <feMergeNode in="SourceGraphic" />
-                                </feMerge>
-                            </filter>
-                        </defs>
-                        <motion.path
-                            key={pathKey}
-                            d={path}
-                            fill="none"
-                            stroke="hsl(var(--border))"
-                            strokeWidth="2"
-                        />
-                        <motion.path
-                            key={`${pathKey}-animated`}
-                            d={path}
-                            fill="none"
-                            stroke="url(#gradient)"
-                            strokeWidth="2.5"
-                            style={{ pathLength }}
-                            filter="url(#glow)"
-                        />
-                         <defs>
-                            <linearGradient id="gradient" x1="0%" y1="0%" x2="0%" y2="100%">
-                                <stop offset="0%" stopColor="hsl(var(--primary) / 0)" />
-                                <stop offset="100%" stopColor="hsl(var(--primary))" />
-                            </linearGradient>
-                        </defs>
-                    </svg>
-                </motion.div>
+        <div ref={ref} className="relative max-w-5xl mx-auto py-16 px-4" style={{minHeight: "2500px"}}>
+             <h2 className="font-headline text-3xl sm:text-4xl font-bold mb-16 text-center z-20 relative">My Journey</h2>
+            
+            <div className="absolute top-0 left-0 h-full w-full">
+                <svg width="100%" height="100%" viewBox={isMobile ? "0 0 10 2000" : "0 0 1000 1800"} preserveAspectRatio="none">
+                    <defs>
+                        <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+                            <feGaussianBlur stdDeviation="5" result="coloredBlur" />
+                            <feMerge>
+                                <feMergeNode in="coloredBlur" />
+                                <feMergeNode in="SourceGraphic" />
+                            </feMerge>
+                        </filter>
+                         <linearGradient id="gradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                            <stop offset="0%" stopColor="hsl(var(--primary) / 0)" />
+                            <stop offset="100%" stopColor="hsl(var(--primary))" />
+                        </linearGradient>
+                    </defs>
+                    <motion.path
+                        key={pathKey}
+                        d={path}
+                        fill="none"
+                        stroke="hsl(var(--border))"
+                        strokeWidth="2"
+                    />
+                    <motion.path
+                        key={`${pathKey}-animated`}
+                        d={path}
+                        fill="none"
+                        stroke="url(#gradient)"
+                        strokeWidth="2.5"
+                        style={{ pathLength }}
+                        filter="url(#glow)"
+                    />
+                </svg>
             </div>
 
-            <div className="relative z-10 space-y-32 md:space-y-48">
+            <div className="relative z-10">
                 {journeyData.map((item, index) => (
                     <JourneyNode key={index} item={item} index={index} isMobile={isMobile ?? false} />
                 ))}
+
+                <div className="relative flex justify-center items-center h-96">
+                    <h2 className="font-headline text-6xl md:text-8xl lg:text-9xl font-bold tracking-tighter text-transparent bg-clip-text bg-gradient-to-b from-foreground to-muted-foreground/80 leading-none">
+                    Dream. Make. Change.
+                    </h2>
+                </div>
+
+                <ExperienceNode item={experiences[0]} isMobile={isMobile ?? false} />
             </div>
         </div>
     );
