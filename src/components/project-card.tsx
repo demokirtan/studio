@@ -26,7 +26,7 @@ export function ProjectCard({ project, image }: ProjectCardProps) {
   }
 
   return (
-    <div className="group relative aspect-[4/3] overflow-hidden rounded-lg shadow-lg">
+    <div className="group relative aspect-[4/3] overflow-hidden rounded-lg shadow-lg transition-all duration-300 ease-in-out hover:shadow-2xl hover:-translate-y-1.5">
       {image ? (
         <Image
           src={image.imageUrl}
