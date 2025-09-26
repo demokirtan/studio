@@ -12,7 +12,7 @@ export function AboutSection() {
   return (
     <>
       <div id="journey" className="relative">
-        <EducationTimeline experienceRef={experienceContainerRef} />
+        <EducationTimeline />
         
         <div className="relative z-10 max-w-5xl mx-auto px-4 background-grid">
           <div className="relative flex justify-center items-center h-96">

@@ -2,7 +2,7 @@
 'use client';
 
 import React, { useRef } from 'react';
-import { motion, useScroll, useTransform, useSpring, type MotionValue } from 'framer-motion';
+import { motion, useScroll, useTransform, type MotionValue } from 'framer-motion';
 import { cn } from '@/lib/utils';
 import { useIsMobile } from '@/hooks/use-mobile';
 
@@ -13,8 +13,6 @@ const journeyData = [
         degree: "Class X - SSC",
         institution: "BAPS SWAMINARAYAN VIDYAMANDIR, SARANGPUR",
         grade: "69.33%",
-        position: { top: '15%', left: '55%' },
-        mobilePosition: { top: '10%', left: '10%' }
     },
     {
         type: 'education',
@@ -22,8 +20,6 @@ const journeyData = [
         degree: "Class XII - HSC",
         institution: "BAPS SWAMINARAYAN VIDYAMANDIR, SARANGPUR",
         grade: "60.93%",
-        position: { top: '30%', left: '15%' },
-        mobilePosition: { top: '25%', left: '10%' }
     },
     {
         type: 'education',
@@ -31,8 +27,6 @@ const journeyData = [
         degree: "Bachelor of Science (IT)",
         institution: "UKA TARSADIA UNIVERSITY",
         grade: "CGPA 5.47",
-        position: { top: '48%', left: '55%' },
-        mobilePosition: { top: '40%', left: '10%' }
     },
     {
         type: 'education',
@@ -40,8 +34,6 @@ const journeyData = [
         degree: "Master of Science (IT)",
         institution: "UKA TARSADIA UNIVERSITY",
         grade: "SGPA 7.59",
-        position: { top: '65%', left: '15%' },
-        mobilePosition: { top: '55%', left: '10%' }
     },
 ];
 
@@ -62,19 +54,24 @@ const Milestone = ({
     const opacity = useTransform(scrollYProgress, [startOpacity, endOpacity], [0, 1]);
     const y = useTransform(scrollYProgress, [startOpacity, endOpacity], [50, 0]);
 
-    const position = isMobile ? item.mobilePosition : item.position;
+    const position = {
+        top: `${15 + itemIndex * 15}%`,
+    };
 
     return (
         <motion.div
             style={{
                 position: 'absolute',
                 top: position.top,
-                left: isMobile ? position.left : (isEven ? '15%' : undefined),
+                left: isMobile ? '10%' : (isEven ? '15%' : undefined),
                 right: isMobile ? undefined : (isEven ? undefined : '15%'),
                 opacity: opacity,
                 y: y,
             }}
-            className="w-full sm:w-2/5 p-4 text-left sm:text-right"
+            className={cn(
+                "w-full sm:w-2/5 p-4",
+                isMobile ? 'text-left' : (isEven ? 'text-left' : 'text-right')
+            )}
         >
             <p className="text-muted-foreground font-mono text-sm">{item.year}</p>
             <h3 className="text-lg sm:text-xl font-bold mt-1 text-foreground">{item.degree}</h3>
@@ -85,7 +82,7 @@ const Milestone = ({
 };
 
 
-export function EducationTimeline({ experienceRef }: { experienceRef: React.RefObject<HTMLDivElement> }) {
+export function EducationTimeline() {
     const isMobile = useIsMobile();
     const timelineRef = React.useRef<HTMLDivElement>(null);
     
@@ -96,7 +93,7 @@ export function EducationTimeline({ experienceRef }: { experienceRef: React.RefO
 
     const pathLength = useTransform(scrollYProgress, [0.05, 0.8], [0, 1]);
 
-    const desktopPath = "M 500 0 V 150 Q 500 250 650 350 T 350 550 Q 350 650 500 750 V 900 Q 500 1000 650 1100 T 350 1300 V 1400";
+    const desktopPath = "M 500 0 V 150 Q 500 250 350 350 T 650 550 Q 650 650 500 750 V 900 Q 500 1000 350 1100 T 650 1300 V 1400";
     const mobilePath = "M 50 0 V 1400";
     const path = isMobile ? mobilePath : desktopPath;
     const pathKey = isMobile ? 'mobile' : 'desktop';
