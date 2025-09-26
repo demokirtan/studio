@@ -69,12 +69,12 @@ const Milestone = ({
             style={{
                 position: 'absolute',
                 top: position.top,
-                left: isMobile ? position.left : (isEven ? position.left : undefined),
+                left: isMobile ? position.left : (isEven ? '15%' : undefined),
                 right: isMobile ? undefined : (isEven ? undefined : '15%'),
                 opacity: opacity,
                 y: y,
             }}
-            className="w-full sm:w-2/5 p-4"
+            className="w-full sm:w-2/5 p-4 text-left sm:text-right"
         >
             <p className="text-muted-foreground font-mono text-sm">{item.year}</p>
             <h3 className="text-lg sm:text-xl font-bold mt-1 text-foreground">{item.degree}</h3>
@@ -96,7 +96,7 @@ export function EducationTimeline({ experienceRef }: { experienceRef: React.RefO
 
     const pathLength = useTransform(scrollYProgress, [0.05, 0.8], [0, 1]);
 
-    const desktopPath = "M 500 0 V 150 Q 500 250 350 350 T 650 550 Q 650 650 500 750 V 900 Q 500 1000 350 1100 T 650 1300 V 1400";
+    const desktopPath = "M 500 0 V 150 Q 500 250 650 350 T 350 550 Q 350 650 500 750 V 900 Q 500 1000 650 1100 T 350 1300 V 1400";
     const mobilePath = "M 50 0 V 1400";
     const path = isMobile ? mobilePath : desktopPath;
     const pathKey = isMobile ? 'mobile' : 'desktop';
