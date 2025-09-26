@@ -7,12 +7,12 @@ import { ExperienceNode } from "./experience-node";
 import { experiences } from "@/lib/experiences-data";
 
 export function AboutSection() {
-  const experienceRef = useRef<HTMLDivElement>(null);
+  const experienceContainerRef = useRef<HTMLDivElement>(null);
   
   return (
     <>
       <div id="journey" className="relative">
-        <EducationTimeline experienceRef={experienceRef} />
+        <EducationTimeline experienceRef={experienceContainerRef} />
         
         <div className="relative z-10 max-w-5xl mx-auto px-4 background-grid">
           <div className="relative flex justify-center items-center h-96">
@@ -20,8 +20,8 @@ export function AboutSection() {
               Dream. Make. Change.
               </h2>
           </div>
-          <div ref={experienceRef}>
-            <ExperienceNode item={experiences[0]} />
+          <div ref={experienceContainerRef} className="h-96">
+            <ExperienceNode item={experiences[0]} targetRef={experienceContainerRef} />
           </div>
         </div>
       </div>

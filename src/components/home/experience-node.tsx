@@ -2,25 +2,30 @@
 'use client';
 
 import React from 'react';
-import { motion } from 'framer-motion';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import { cn } from '@/lib/utils';
 import type { Experience } from '@/lib/experiences-data';
 import { useIsMobile } from '@/hooks/use-mobile';
 
 
-export const ExperienceNode = ({ item }: { item: Experience }) => {
+export const ExperienceNode = ({ item, targetRef }: { item: Experience, targetRef: React.RefObject<HTMLDivElement> }) => {
     const isMobile = useIsMobile();
+    const { scrollYProgress } = useScroll({
+        target: targetRef,
+        offset: ['start end', 'end start'],
+    });
+
+    const y = useTransform(scrollYProgress, [0, 1], [0, -100]);
+    const opacity = useTransform(scrollYProgress, [0.5, 0.75], [0, 1]);
+
 
     return (
         <motion.div
+            style={{ y, opacity }}
             className={cn(
-                "relative z-20 w-full",
-                isMobile ? "p-4" : "p-8 w-3/4 max-w-2xl mx-auto"
+                "relative z-20 w-full pt-16",
+                isMobile ? "p-4 text-left" : "p-8 w-3/4 max-w-2xl mx-auto text-center"
             )}
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.5 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
         >
             <p className="text-muted-foreground font-mono text-sm">{item.period}</p>
             <h3 className="text-lg sm:text-xl font-bold mt-1 text-foreground">{item.title}</h3>
