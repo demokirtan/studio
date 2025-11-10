@@ -24,7 +24,7 @@ export const projects: Project[] = [
     category: "Web Development",
     imageId: "project-2",
     description: "Developed a restaurant/café management system using ASP.NET and SQL Server. The system allows for efficient order management, billing, and inventory tracking, with features like table management and customer service. Admins can manage staff schedules, view sales analytics, and generate reports. The system is designed to streamline operations and improve customer service.",
-    githubLink: "#"
+    githubLink: "https://github.com/kkbro07/Food_Ordering_Project"
   },
   {
     id: "3",
