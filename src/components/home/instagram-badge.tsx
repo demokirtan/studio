@@ -13,24 +13,26 @@ export function InstagramBadge() {
 
     return (
         <Card className="w-[240px] pt-4 text-left">
-            <CardHeader className="flex flex-row items-center gap-4 p-4">
-                {avatar && (
-                    <Image 
-                        src={avatar.imageUrl}
-                        alt="Kirtan Kalathiya"
-                        width={64}
-                        height={64}
-                        className="rounded-full"
-                        data-ai-hint={avatar.imageHint}
-                    />
-                )}
-                <div>
-                    <h3 className="font-bold text-base">kirtankalathiyas</h3>
-                    <p className="text-sm text-muted-foreground">Kirtan Kalathiya</p>
-                </div>
+            <CardHeader className="p-4">
+                 <Link href="https://www.instagram.com/kirtankalathiyas/" target="_blank" className="flex items-center gap-4">
+                    {avatar && (
+                        <Image 
+                            src={avatar.imageUrl}
+                            alt="Kirtan Kalathiya"
+                            width={64}
+                            height={64}
+                            className="rounded-full"
+                            data-ai-hint={avatar.imageHint}
+                        />
+                    )}
+                    <div>
+                        <h3 className="font-bold text-base">kirtankalathiyas</h3>
+                        <p className="text-sm text-muted-foreground">Kirtan Kalathiya</p>
+                    </div>
+                </Link>
             </CardHeader>
-            <CardContent className="p-4">
-                 <div className="flex justify-around text-center">
+            <CardContent className="px-4 pb-4">
+                 <div className="flex justify-around text-center text-sm">
                     <div>
                         <p className="font-bold">18</p>
                         <p className="text-xs text-muted-foreground">Posts</p>
@@ -49,7 +51,7 @@ export function InstagramBadge() {
             <CardFooter className="p-4">
                 <Button asChild className="w-full bg-[#0095F6] hover:bg-[#0095F6]/90 text-white">
                     <Link href="https://www.instagram.com/kirtankalathiyas/" target="_blank">
-                        Follow on Instagram
+                        Follow
                     </Link>
                 </Button>
             </CardFooter>
