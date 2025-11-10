@@ -1,4 +1,5 @@
 
+
 "use client";
 
 import { Hero } from "@/components/home/hero";
@@ -18,6 +19,7 @@ import Link from "next/link";
 import { Github, Instagram, Linkedin, Twitter } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { InstagramBadge } from "@/components/home/instagram-badge";
+import { GithubBadge } from "@/components/home/github-badge";
 
 export default function Home() {
   const { resolvedTheme } = useTheme();
@@ -105,15 +107,16 @@ export default function Home() {
                   <Twitter />
                 </Button>
               </Link>
-              <Link href="https://www.instagram.com/kirtankalathiyas/" aria-label="Instagram">
+              <Link href="https://www.instagram.com/kirtankalathiyas/" aria-label="Instagram" target="_blank">
                 <Button variant="outline" size="icon">
                   <Instagram />
                 </Button>
               </Link>
             </div>
-            <div className="flex justify-center items-start gap-8 mt-8">
+            <div className="flex flex-wrap justify-center items-start gap-8 mt-8">
               {renderLinkedInBadge()}
               {mounted && <InstagramBadge />}
+              {mounted && <GithubBadge />}
             </div>
         </div>
       </section>
