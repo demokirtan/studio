@@ -17,6 +17,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Github, Instagram, Linkedin, Twitter } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { InstagramBadge } from "@/components/home/instagram-badge";
 
 export default function Home() {
   const { resolvedTheme } = useTheme();
@@ -110,8 +111,9 @@ export default function Home() {
                 </Button>
               </Link>
             </div>
-            <div className="flex justify-center mt-8">
+            <div className="flex justify-center items-start gap-8 mt-8">
               {renderLinkedInBadge()}
+              {mounted && <InstagramBadge />}
             </div>
         </div>
       </section>
