@@ -2,6 +2,7 @@ import Image from "next/image";
 import type { Project } from "@/lib/projects-data";
 import type { ImagePlaceholder } from "@/lib/placeholder-images";
 import { ArrowRight } from "lucide-react";
+import Link from "next/link";
 
 type ProjectCardProps = {
   project: Project;
@@ -25,7 +26,7 @@ export function ProjectCard({ project, image }: ProjectCardProps) {
     }
   }
 
-  return (
+  const CardContent = () => (
     <div className="group relative aspect-[4/3] overflow-hidden rounded-lg shadow-lg transition-all duration-300 ease-in-out hover:shadow-2xl hover:-translate-y-1.5">
       {image ? (
         <Image
@@ -57,4 +58,14 @@ export function ProjectCard({ project, image }: ProjectCardProps) {
       </div>
     </div>
   );
+
+  if (project.githubLink && project.githubLink !== '#') {
+    return (
+      <Link href={project.githubLink} target="_blank" rel="noopener noreferrer">
+        <CardContent />
+      </Link>
+    )
+  }
+
+  return <CardContent />;
 }

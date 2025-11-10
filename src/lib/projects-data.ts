@@ -16,7 +16,7 @@ export const projects: Project[] = [
     category: "Web Development",
     imageId: "project-1",
     description: "Developed a food delivery platform using HTML for the frontend, MySQL for the database, and PHP for the backend. The system allows users to browse restaurant menus, place orders, and track deliveries. Admins can manage orders, update menu items, and handle customer requests. The application is hosted on an XAMPP server for local development, ensuring smooth interaction between the frontend and backend components.",
-    githubLink: "#"
+    githubLink: "https://github.com/kkbro07/project"
   },
   {
     id: "2",
