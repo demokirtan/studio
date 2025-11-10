@@ -11,12 +11,42 @@ import { ProjectSectionHeader } from "@/components/home/project-section-header";
 import { motion } from "framer-motion";
 import { BlogSection } from "@/components/home/blog-section";
 import { Separator } from "@/components/ui/separator";
+import { useTheme } from "next-themes";
+import { useEffect, useState } from "react";
 
 export default function Home() {
+  const { resolvedTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+  
   const imageMap = PlaceHolderImages.reduce((acc, img) => {
     acc[img.id] = img;
     return acc;
   }, {} as Record<string, ImagePlaceholder>);
+
+  const renderLinkedInBadge = () => {
+    if (!mounted) {
+      // Render a placeholder or nothing on the server/first-render
+      return <div className="w-[240px] h-[317px]"></div>; 
+    }
+
+    if (resolvedTheme === 'dark') {
+      return (
+        <div key="dark-badge" className="badge-base LI-profile-badge" data-locale="en_US" data-size="medium" data-theme="dark" data-type="VERTICAL" data-vanity="kirtankalathiya" data-version="v1">
+            {/* The script will populate this */}
+        </div>
+      );
+    }
+    
+    return (
+      <div key="light-badge" className="badge-base LI-profile-badge" data-locale="en_US" data-size="medium" data-theme="light" data-type="VERTICAL" data-vanity="kirtankalathiya" data-version="v1">
+          {/* The script will populate this */}
+      </div>
+    );
+  }
 
   return (
     <>
@@ -47,9 +77,7 @@ export default function Home() {
       </div>
       <BlogSection />
       <section className="py-16 sm:py-24 flex justify-center">
-        <div className="badge-base LI-profile-badge" data-locale="en_US" data-size="medium" data-theme="light" data-type="VERTICAL" data-vanity="kirtankalathiya" data-version="v1">
-            {/* The script will populate this */}
-        </div>
+        {renderLinkedInBadge()}
       </section>
       <ContactSection />
     </>
