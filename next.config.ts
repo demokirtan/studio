@@ -33,6 +33,12 @@ const nextConfig: NextConfig = {
         hostname: 'storage.googleapis.com',
         port: '',
         pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'instagram.famd5-4.fna.fbcdn.net',
+        port: '',
+        pathname: '/**',
       }
     ],
   },

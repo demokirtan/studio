@@ -4,19 +4,19 @@ import { PlaceHolderImages } from '@/lib/placeholder-images';
 
 const posts = [
     {
-        slug: 'sample-post',
-        title: 'Quick start with Magic Portfolio',
+        slug: 'the-art-of-conversion-rate-optimization',
+        title: 'The Art of Conversion Rate Optimization (CRO)',
         author: 'Kirtan Kalathiya',
         date: 'April 23, 2025',
-        category: 'Magic Portfolio',
+        category: 'Marketing',
         avatarId: 'kirtan-avatar',
     },
     {
-        slug: 'the-perfect-tech-stack-for-modern-web-apps',
-        title: 'Enable or disable pages for your portfolio',
+        slug: 'api-design-best-practices',
+        title: 'REST vs GraphQL: API Design Best Practices',
         author: 'Kirtan Kalathiya',
         date: 'April 22, 2025',
-        category: 'Magic Portfolio',
+        category: 'Development',
         avatarId: 'kirtan-avatar',
     },
 ];

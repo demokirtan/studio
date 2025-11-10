@@ -32,15 +32,15 @@ export function InstagramBadge() {
             <CardContent className="p-4">
                  <div className="flex justify-around text-center">
                     <div>
-                        <p className="font-bold">15</p>
+                        <p className="font-bold">18</p>
                         <p className="text-xs text-muted-foreground">Posts</p>
                     </div>
                      <div>
-                        <p className="font-bold">250</p>
+                        <p className="font-bold">354</p>
                         <p className="text-xs text-muted-foreground">Followers</p>
                     </div>
                      <div>
-                        <p className="font-bold">300</p>
+                        <p className="font-bold">224</p>
                         <p className="text-xs text-muted-foreground">Following</p>
                     </div>
                 </div>
