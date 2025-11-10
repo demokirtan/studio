@@ -100,9 +100,9 @@ export default function Home() {
             </div>
             <div className="flex flex-wrap justify-center items-start gap-8 mt-8">
               {mounted && <LinkedInBadge />}
-              {mounted && <InstagramBadge />}
               {mounted && <GithubBadge />}
               {mounted && <YoutubeBadge />}
+              {mounted && <InstagramBadge />}
             </div>
         </div>
       </section>
