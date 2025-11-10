@@ -1,4 +1,4 @@
-import { Github, Twitter, Linkedin, Download, Instagram } from "lucide-react";
+import { Github, Twitter, Linkedin, Download, Instagram, Youtube } from "lucide-react";
 import Link from "next/link";
 
 export function Footer() {
@@ -35,8 +35,17 @@ export function Footer() {
             href="https://www.instagram.com/kirtankalathiyas/"
             aria-label="Instagram"
             className="text-muted-foreground transition-colors hover:text-foreground"
+            target="_blank"
           >
             <Instagram className="h-5 w-5" />
+          </Link>
+          <Link
+            href="https://www.youtube.com/@kirtankalathiya"
+            aria-label="YouTube"
+            className="text-muted-foreground transition-colors hover:text-foreground"
+            target="_blank"
+          >
+            <Youtube className="h-5 w-5" />
           </Link>
           <Link
             href="/resume.pdf"

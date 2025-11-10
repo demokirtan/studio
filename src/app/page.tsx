@@ -16,7 +16,7 @@ import { Separator } from "@/components/ui/separator";
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { Github, Instagram, Linkedin, Twitter } from "lucide-react";
+import { Github, Instagram, Linkedin, Twitter, Youtube } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { InstagramBadge } from "@/components/home/instagram-badge";
 import { GithubBadge } from "@/components/home/github-badge";
@@ -110,6 +110,11 @@ export default function Home() {
               <Link href="https://www.instagram.com/kirtankalathiyas/" aria-label="Instagram" target="_blank">
                 <Button variant="outline" size="icon">
                   <Instagram />
+                </Button>
+              </Link>
+              <Link href="https://www.youtube.com/@kirtankalathiya" aria-label="YouTube" target="_blank">
+                <Button variant="outline" size="icon">
+                  <Youtube />
                 </Button>
               </Link>
             </div>
