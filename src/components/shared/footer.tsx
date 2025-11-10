@@ -10,9 +10,10 @@ export function Footer() {
         </p>
         <div className="flex items-center space-x-4">
           <Link
-            href="#"
+            href="https://github.com/kkbro07"
             aria-label="GitHub"
             className="text-muted-foreground transition-colors hover:text-foreground"
+            target="_blank"
           >
             <Github className="h-5 w-5" />
           </Link>

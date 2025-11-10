@@ -90,7 +90,7 @@ export default function Home() {
                 Connect with me to see my professional journey, achievements, and to network with other professionals in our industry.
             </p>
             <div className="flex justify-center gap-8 mt-8">
-              <Link href="#" aria-label="GitHub">
+              <Link href="https://github.com/kkbro07" aria-label="GitHub" target="_blank">
                 <Button variant="outline" size="icon">
                   <Github />
                 </Button>
