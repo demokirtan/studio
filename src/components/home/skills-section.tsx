@@ -1,11 +1,11 @@
 
-import { SkillsCarousel } from "./skills-carousel";
+import { SkillTabs } from "./skill-tabs";
 
 export function SkillsSection() {
   return (
-    <section className="py-16 sm:py-24 bg-background">
+    <section id="skills" className="py-16 sm:py-24 bg-background">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-16">
+        <div className="text-center mb-12 sm:mb-16">
             <h2 className="font-headline text-3xl sm:text-4xl font-bold tracking-tighter">
                 Tools & Technologies
             </h2>
@@ -13,7 +13,7 @@ export function SkillsSection() {
                 A collection of technologies I'm proficient with, from programming languages to modern frameworks.
             </p>
         </div>
-        <SkillsCarousel />
+        <SkillTabs />
       </div>
     </section>
   );

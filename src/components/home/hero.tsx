@@ -12,6 +12,7 @@ export function Hero() {
   const navItems = [
     { href: "/#work", label: "Work" },
     { href: "/#journey", label: "About" },
+    { href: "/#skills", label: "Skills" },
     { href: "/#journey", label: "Experience" },
     { href: "/blog", label: "Blog" },
     { href: "/#contact", label: "Contact" },
