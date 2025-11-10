@@ -7,6 +7,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import Link from "next/link";
 
 export function ExperienceSection() {
   const experience = experiences[0];
@@ -26,7 +27,13 @@ export function ExperienceSection() {
                 <div className="flex justify-between items-start">
                     <div>
                         <CardTitle className="text-xl">{experience.title}</CardTitle>
-                        <CardDescription className="text-base">{experience.company}</CardDescription>
+                        {experience.companyLink ? (
+                            <Link href={experience.companyLink} target="_blank" rel="noopener noreferrer" className="text-base text-muted-foreground hover:text-primary transition-colors">
+                                {experience.company}
+                            </Link>
+                        ) : (
+                            <CardDescription className="text-base">{experience.company}</CardDescription>
+                        )}
                     </div>
                     <p className="text-sm text-muted-foreground font-mono shrink-0">{experience.period}</p>
                 </div>
