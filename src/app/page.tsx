@@ -11,7 +11,6 @@ import { AboutSection } from "@/components/home/about-section";
 import { ContactSection } from "@/components/home/contact-section";
 import { ProjectSectionHeader } from "@/components/home/project-section-header";
 import { motion } from "framer-motion";
-import { BlogSection } from "@/components/home/blog-section";
 import { Separator } from "@/components/ui/separator";
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
@@ -63,10 +62,6 @@ export default function Home() {
       <AboutSection />
       <SkillsSection />
       <ExperienceSection />
-      <div className="max-w-5xl mx-auto px-4">
-        <Separator />
-      </div>
-      <BlogSection />
       <section className="py-16 sm:py-24 text-center">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <h2 className="font-headline text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl">

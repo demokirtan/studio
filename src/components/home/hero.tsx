@@ -14,7 +14,6 @@ export function Hero() {
     { href: "/#journey", label: "About" },
     { href: "/#skills", label: "Skills" },
     { href: "/#journey", label: "Experience" },
-    { href: "/blog", label: "Blog" },
     { href: "/#contact", label: "Contact" },
   ];
 
