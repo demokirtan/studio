@@ -17,6 +17,9 @@ const fontOswald = Oswald({
 export const metadata: Metadata = {
   title: "Kirtan Kalathiya",
   description: "Portfolio of Kirtan Kalathiya, a web designer and developer from Surat, India.",
+  verification: {
+    google: "3djwAsJalUA-JfNPlS0vR-AQNlCOpz38R4mQDePdY8I",
+  },
 };
 
 export default function RootLayout({
