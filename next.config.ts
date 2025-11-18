@@ -1,5 +1,4 @@
 import type {NextConfig} from 'next';
-import createMDX from '@next/mdx'
 
 /** @type {import('next').NextConfig} */
 const nextConfig: NextConfig = {
@@ -47,8 +46,4 @@ const nextConfig: NextConfig = {
   },
 };
 
-const withMDX = createMDX({
-  // Add markdown plugins here, such as rehype-prism
-});
-
-export default withMDX(nextConfig);
+export default nextConfig;
