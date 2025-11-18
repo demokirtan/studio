@@ -1,8 +1,6 @@
 import { getPostBySlug, getAllPosts } from "@/lib/blog";
 import { notFound } from "next/navigation";
-import { MDXRemote } from "next-mdx-remote/rsc";
 import { format } from "date-fns";
-import Image from 'next/image';
 
 type BlogPostPageProps = {
   params: {
@@ -10,7 +8,6 @@ type BlogPostPageProps = {
   };
 };
 
-// This generates the routes for all blog posts at build time.
 export function generateStaticParams() {
   const posts = getAllPosts();
   return posts.map((post) => ({
@@ -25,7 +22,6 @@ export async function generateMetadata({ params }: BlogPostPageProps) {
   }
   return {
     title: post.metadata.title,
-    description: post.metadata.excerpt,
   };
 }
 
@@ -35,6 +31,8 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
   if (!post) {
     notFound();
   }
+
+  const PostContent = post.component;
 
   return (
     <div className="container mx-auto max-w-3xl px-4 py-16 sm:px-6 lg:px-8 sm:py-24">
@@ -51,7 +49,7 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
       </header>
 
       <article className="prose prose-lg dark:prose-invert max-w-none prose-headings:font-headline prose-headings:tracking-tighter prose-a:text-primary hover:prose-a:underline">
-        <MDXRemote source={post.content} components={{}} />
+        <PostContent />
       </article>
     </div>
   );
