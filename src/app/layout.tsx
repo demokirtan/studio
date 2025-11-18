@@ -49,6 +49,20 @@ export default function RootLayout({
           <Toaster />
         </ThemeProvider>
         <Script src="https://platform.linkedin.com/badges/js/profile.js" async defer type="text/javascript"></Script>
+        
+        <Script 
+          src="https://www.googletagmanager.com/gtag/js?id=G-MHS8TBJLFW"
+          strategy="afterInteractive" 
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-MHS8TBJLFW');
+          `}
+        </Script>
+
       </body>
     </html>
   );
