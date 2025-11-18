@@ -36,10 +36,6 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
     notFound();
   }
 
-  const components = {
-    Image,
-  };
-
   return (
     <div className="container mx-auto max-w-3xl px-4 py-16 sm:px-6 lg:px-8 sm:py-24">
       <header className="mb-12">
@@ -55,7 +51,7 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
       </header>
 
       <article className="prose prose-lg dark:prose-invert max-w-none prose-headings:font-headline prose-headings:tracking-tighter prose-a:text-primary hover:prose-a:underline">
-        <MDXRemote source={post.content} components={components} />
+        <MDXRemote source={post.content} components={{}} />
       </article>
     </div>
   );
