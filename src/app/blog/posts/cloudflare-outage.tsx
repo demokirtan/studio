@@ -1,10 +1,29 @@
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { PlaceHolderImages } from "@/lib/placeholder-images";
 import { Terminal } from "lucide-react";
+import Image from "next/image";
 
 export default function CloudflareOutagePost() {
+  const image = PlaceHolderImages.find(p => p.id === 'cloudflare-outage-hero');
+
   return (
     <>
-      <p>Earlier today, a widespread outage tied to Cloudflare caused significant disruption across the internet—impacting major platforms and essential online services worldwide.</p>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+        <div className="flex flex-col justify-center">
+            <p className="lead">Earlier today, a widespread outage tied to Cloudflare caused significant disruption across the internet—impacting major platforms and essential online services worldwide.</p>
+        </div>
+        <div className="relative aspect-video">
+            {image && (
+                <Image 
+                    src={image.imageUrl} 
+                    alt={image.description} 
+                    fill 
+                    className="rounded-lg object-cover"
+                    data-ai-hint={image.imageHint}
+                />
+            )}
+        </div>
+      </div>
       
       <h2>What Happened?</h2>
       <blockquote>

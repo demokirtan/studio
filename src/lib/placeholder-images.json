@@ -71,6 +71,12 @@
       "description": "Portrait of a man smiling",
       "imageUrl": "https://instagram.famd5-4.fna.fbcdn.net/v/t51.2885-19/509816390_18064982852324699_2462314163704549797_n.jpg?_nc_cat=111&ccb=1-7&_nc_sid=7a9f4b&_nc_ohc=T1775M7552cQ7kNvwGcCJ34&_nc_ht=instagram.famd5-4.fna&oh=00_AfjWAQjDFgmpIlMA74ecc812QRga9YdIXZfJD6mbk92gmQ&oe=69177DFF",
       "imageHint": "man portrait"
+    },
+    {
+      "id": "cloudflare-outage-hero",
+      "description": "Abstract digital network connections",
+      "imageUrl": "https://images.unsplash.com/photo-1550745165-9bc0b252726a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxhYnN0cmFjdCUyMGRpZ2l0YWwlMjBuZXR3b3JrfGVufDB8fHx8MTc2MDk0NzU0NHww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "digital network"
     }
   ]
 }

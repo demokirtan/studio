@@ -13,14 +13,22 @@ export function ProjectCard({ project, image }: ProjectCardProps) {
   let width = 800;
   let height = 600;
 
-  if (image) {
+  if (image && image.imageUrl) {
     try {
-      const url = new URL(image.imageUrl);
-      const parts = url.pathname.split('/');
-      const w = parseInt(parts[parts.length - 2], 10);
-      const h = parseInt(parts[parts.length - 1], 10);
-      if (!isNaN(w)) width = w;
-      if (!isNaN(h)) height = h;
+      if (image.imageUrl.startsWith('https://images.unsplash.com')) {
+        const url = new URL(image.imageUrl);
+        const w = parseInt(url.searchParams.get('w') || '800', 10);
+        const h = parseInt(url.searchParams.get('h') || '600', 10);
+        if (!isNaN(w)) width = w;
+        if (!isNaN(h)) height = h;
+      } else if (image.imageUrl.startsWith('https://picsum.photos')) {
+        const url = new URL(image.imageUrl);
+        const parts = url.pathname.split('/');
+        const w = parseInt(parts[parts.length - 2], 10);
+        const h = parseInt(parts[parts.length - 1], 10);
+        if (!isNaN(w)) width = w;
+        if (!isNaN(h)) height = h;
+      }
     } catch (e) {
       // Keep default values if URL parsing fails
     }
