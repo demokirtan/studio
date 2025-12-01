@@ -25,6 +25,15 @@ export async function generateMetadata({ params }: BlogPostPageProps) {
   }
   return {
     title: post.metadata.title,
+    description: post.metadata.excerpt,
+    authors: [{ name: post.metadata.author }],
+    openGraph: {
+      title: post.metadata.title,
+      description: post.metadata.excerpt,
+      type: 'article',
+      publishedTime: post.metadata.date,
+      authors: [post.metadata.author],
+    }
   };
 }
 
@@ -36,40 +45,71 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
   }
 
   const PostContent = post.component;
+  
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    'mainEntityOfPage': {
+      '@type': 'WebPage',
+      '@id': `https://kirtankalathiya.com/blog/${post.slug}`,
+    },
+    'headline': post.metadata.title,
+    'description': post.metadata.excerpt,
+    'datePublished': post.metadata.date,
+    'dateModified': post.metadata.date,
+    'author': {
+      '@type': 'Person',
+      'name': post.metadata.author,
+    },
+    'publisher': {
+      '@type': 'Person',
+      'name': 'Kirtan Kalathiya',
+      'logo': {
+        '@type': 'ImageObject',
+        'url': 'https://kirtankalathiya.com/kirtan-avatar.png'
+      }
+    }
+  };
 
   return (
-    <div className="fade-in bg-background">
-      <div className="container mx-auto max-w-4xl px-4 py-16 sm:px-6 lg:px-8 sm:py-24">
-        <header className="mb-12">
-          <div className="mb-8">
-            <Link href="/blog">
-              <Button variant="ghost">
-                <ArrowLeft className="mr-2 h-4 w-4" />
-                Back to Blog
-              </Button>
-            </Link>
-          </div>
-          <h1 className="font-headline text-4xl font-bold leading-tight tracking-tight text-foreground sm:text-5xl">
-            {post.metadata.title}
-          </h1>
-          <div className="mt-4 flex items-center space-x-6 text-sm text-muted-foreground">
-            <div className="flex items-center space-x-2">
-              <User className="h-4 w-4" />
-              <span>{post.metadata.author}</span>
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <div className="fade-in bg-background">
+        <div className="container mx-auto max-w-4xl px-4 py-16 sm:px-6 lg:px-8 sm:py-24">
+          <header className="mb-12">
+            <div className="mb-8">
+              <Link href="/blog">
+                <Button variant="ghost">
+                  <ArrowLeft className="mr-2 h-4 w-4" />
+                  Back to Blog
+                </Button>
+              </Link>
             </div>
-            <div className="flex items-center space-x-2">
-              <Calendar className="h-4 w-4" />
-              <time dateTime={post.metadata.date}>
-                {format(new Date(post.metadata.date), "MMMM d, yyyy")}
-              </time>
+            <h1 className="font-headline text-4xl font-bold leading-tight tracking-tight text-foreground sm:text-5xl">
+              {post.metadata.title}
+            </h1>
+            <div className="mt-4 flex items-center space-x-6 text-sm text-muted-foreground">
+              <div className="flex items-center space-x-2">
+                <User className="h-4 w-4" />
+                <span>{post.metadata.author}</span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <Calendar className="h-4 w-4" />
+                <time dateTime={post.metadata.date}>
+                  {format(new Date(post.metadata.date), "MMMM d, yyyy")}
+                </time>
+              </div>
             </div>
-          </div>
-        </header>
+          </header>
 
-        <article className="prose prose-lg dark:prose-invert max-w-none prose-headings:font-headline prose-headings:tracking-tighter prose-headings:text-foreground prose-a:text-primary hover:prose-a:underline prose-blockquote:border-primary prose-blockquote:text-muted-foreground prose-strong:text-foreground">
-          <PostContent />
-        </article>
+          <article className="prose prose-lg dark:prose-invert max-w-none prose-headings:font-headline prose-headings:tracking-tighter prose-headings:text-foreground prose-a:text-primary hover:prose-a:underline prose-blockquote:border-primary prose-blockquote:text-muted-foreground prose-strong:text-foreground">
+            <PostContent />
+          </article>
+        </div>
       </div>
-    </div>
+    </>
   );
 }

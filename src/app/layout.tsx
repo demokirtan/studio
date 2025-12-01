@@ -27,8 +27,38 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
+  const personSchema = {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Kirtan Kalathiya",
+    "url": "https://kirtankalathiya.com",
+    "jobTitle": "Web Designer & Developer",
+    "email": "kirtan6189@gmail.com",
+    "telephone": "+91 7621987245",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Surat",
+      "addressRegion": "Gujarat",
+      "addressCountry": "IN"
+    },
+    "sameAs": [
+      "https://github.com/kkbro07",
+      "https://www.linkedin.com/in/kirtankalathiya/",
+      "https://www.instagram.com/kirtankalathiyas/",
+      "https://www.youtube.com/@kirtankalathiya"
+    ]
+  };
+
+
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }}
+        />
+      </head>
       <body
         className={cn(
           "min-h-screen bg-background font-body antialiased",
