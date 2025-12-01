@@ -4,6 +4,7 @@ import { format } from "date-fns";
 import { ArrowLeft, Calendar, User } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { Breadcrumb } from "@/components/shared/breadcrumb";
 
 type BlogPostPageProps = {
   params: {
@@ -71,23 +72,43 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
     }
   };
 
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [{
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Blog",
+      "item": "https://kirtankalathiya.com/blog"
+    },{
+      "@type": "ListItem",
+      "position": 2,
+      "name": post.metadata.title
+    }]
+  }
+
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
+
       <div className="fade-in bg-background">
         <div className="container mx-auto max-w-4xl px-4 py-16 sm:px-6 lg:px-8 sm:py-24">
           <header className="mb-12">
-            <div className="mb-8">
-              <Link href="/blog">
-                <Button variant="ghost">
-                  <ArrowLeft className="mr-2 h-4 w-4" />
-                  Back to Blog
-                </Button>
-              </Link>
-            </div>
+            <Breadcrumb
+              className="mb-8"
+              items={[
+                { label: "Home", href: "/" },
+                { label: "Blog", href: "/blog" },
+                { label: post.metadata.title },
+              ]}
+            />
             <h1 className="font-headline text-4xl font-bold leading-tight tracking-tight text-foreground sm:text-5xl">
               {post.metadata.title}
             </h1>
