@@ -1,6 +1,7 @@
 
 import { default as CloudflareOutage } from '@/app/blog/posts/cloudflare-outage';
 import { default as SeoBasics } from '@/app/blog/posts/seo-basics';
+import { default as DigitalMarketingIntro } from '@/app/blog/posts/digital-marketing-intro';
 
 export type PostMetadata = {
   title: string;
@@ -38,5 +39,16 @@ export const posts: Post[] = [
       imageId: "seo-basics-hero",
     },
     component: SeoBasics,
+  },
+  {
+    slug: 'digital-marketing-intro',
+    metadata: {
+      title: "An Introduction to Digital Marketing",
+      date: "2025-11-22",
+      author: "kk",
+      excerpt: "A comprehensive overview of digital marketing, exploring the various channels and strategies that businesses use to connect with customers online.",
+      imageId: "digital-marketing-hero",
+    },
+    component: DigitalMarketingIntro,
   },
 ];
