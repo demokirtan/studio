@@ -23,6 +23,7 @@ import { YoutubeBadge } from "@/components/home/youtube-badge";
 import { LinkedInBadge } from "@/components/home/linkedin-badge";
 import { ExperienceSection } from "@/components/home/experience-section";
 import { SkillsSection } from "@/components/home/skills-section";
+import { FaqSection } from "@/components/home/faq-section";
 
 export default function Home() {
   const [mounted, setMounted] = useState(false);
@@ -105,6 +106,7 @@ export default function Home() {
             </div>
         </div>
       </section>
+      <FaqSection />
       <ContactSection />
     </>
   );
