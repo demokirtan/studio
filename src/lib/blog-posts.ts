@@ -2,6 +2,7 @@ import { default as CloudflareOutage } from '@/app/blog/posts/cloudflare-outage'
 import { default as SeoBasics } from '@/app/blog/posts/seo-basics';
 import { default as DigitalMarketingIntro } from '@/app/blog/posts/digital-marketing-intro';
 import { default as VoiceSearchOptimization } from '@/app/blog/posts/voice-search-optimization';
+import { default as DigitalMarketingGuide } from '@/app/blog/posts/digital-marketing-guide';
 
 export type PostMetadata = {
   title: string;
@@ -62,6 +63,18 @@ export const posts: Post[] = [
     },
     component: VoiceSearchOptimization,
   },
+  {
+    slug: 'digital-marketing-guide',
+    metadata: {
+      title: "The Ultimate Digital Marketing Guide 2025: SEO, SMM, Blogging & More Explained",
+      date: "2025-08-19",
+      author: "Kirtan Kalathiya",
+      excerpt: "A complete guide covering all essential digital marketing concepts for 2025, from SEO and SEM to social media marketing, blogging, and beyond.",
+      imageId: "digital-marketing-guide-hero",
+    },
+    component: DigitalMarketingGuide,
+  }
 ];
 
+    
     
