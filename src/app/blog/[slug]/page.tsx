@@ -52,8 +52,7 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
   const allPosts = getAllPosts();
   const recentPosts = allPosts.filter(p => p.slug !== params.slug).slice(0, 2);
 
-  const PostContent = post.component;
-  const postImage = PlaceHolderImages.find(p => p.id === 'cloudflare-outage-hero');
+  const postImage = PlaceHolderImages.find(p => p.id === post.metadata.imageId);
   const authorImage = PlaceHolderImages.find(p => p.id === 'kirtan-avatar');
   
   const jsonLd = {
@@ -96,6 +95,8 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
       "name": post.metadata.title
     }]
   }
+
+  const PostContent = post.component;
 
   return (
     <>
@@ -152,7 +153,7 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 {recentPosts.map((recentPost) => {
-                  const recentPostImage = PlaceHolderImages.find(p => p.id === 'cloudflare-outage-hero');
+                  const recentPostImage = PlaceHolderImages.find(p => p.id === recentPost.metadata.imageId);
                   return (
                   <Link key={recentPost.slug} href={`/blog/${recentPost.slug}`} className="group block">
                     <div className="relative aspect-video mb-4 rounded-lg overflow-hidden shadow-md">

@@ -12,7 +12,7 @@ export default function BlogPage() {
   const heroPost = allPosts[0];
   const otherPosts = allPosts.slice(1);
   const authorImage = PlaceHolderImages.find(p => p.id === 'kirtan-avatar');
-  const heroPostImage = PlaceHolderImages.find(p => p.id === 'cloudflare-outage-hero');
+  const heroPostImage = PlaceHolderImages.find(p => p.id === heroPost.metadata.imageId);
 
   return (
     <div className="container mx-auto max-w-6xl px-4 py-16 sm:px-6 lg:px-8 sm:py-24">
@@ -74,7 +74,7 @@ export default function BlogPage() {
       {otherPosts.length > 0 && (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
           {otherPosts.map((post) => {
-             const postImage = PlaceHolderImages.find(p => p.id === 'cloudflare-outage-hero');
+             const postImage = PlaceHolderImages.find(p => p.id === post.metadata.imageId);
             return (
             <article
               key={post.slug}
