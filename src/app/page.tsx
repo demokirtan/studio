@@ -57,7 +57,11 @@ export default function Home() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.1, duration: 0.5, ease: "easeOut" }}
               >
-                <FeaturedProjectCard project={project} image={image} />
+                <FeaturedProjectCard 
+                  project={project} 
+                  image={image} 
+                  align={index % 2 === 0 ? 'left' : 'right'} 
+                />
               </motion.div>
             )
           })}

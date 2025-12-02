@@ -3,15 +3,17 @@ import type { Project } from "@/lib/projects-data";
 import type { ImagePlaceholder } from "@/lib/placeholder-images";
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 import { Button } from "../ui/button";
+import { cn } from "@/lib/utils";
 
 type FeaturedProjectCardProps = {
   project: Project;
   image?: ImagePlaceholder;
+  align?: "left" | "right";
 };
 
-export function FeaturedProjectCard({ project, image }: FeaturedProjectCardProps) {
+export function FeaturedProjectCard({ project, image, align = "left" }: FeaturedProjectCardProps) {
   let width = 800;
   let height = 600;
 
@@ -39,7 +41,10 @@ export function FeaturedProjectCard({ project, image }: FeaturedProjectCardProps
   const CardBody = () => (
     <Card className="overflow-hidden transition-shadow duration-300 hover:shadow-xl">
       <div className="grid grid-cols-1 md:grid-cols-2">
-        <div className="relative aspect-video md:aspect-auto">
+        <div className={cn(
+          "relative aspect-video md:aspect-auto",
+           align === 'right' && 'md:order-last'
+        )}>
           {image ? (
             <Image
               src={image.imageUrl}
