@@ -31,18 +31,18 @@ export function ScrollToTop() {
   };
 
   return (
-    <div className="fixed bottom-4 right-4 z-50">
+    <div className="fixed bottom-6 right-6 z-50">
       <Button
         variant="outline"
         size="icon"
         onClick={scrollToTop}
         className={cn(
-          'h-10 w-10 rounded-full bg-background/80 backdrop-blur-sm transition-opacity hover:bg-accent',
+          'h-12 w-12 rounded-full bg-background/80 backdrop-blur-sm transition-opacity hover:bg-accent',
           isVisible ? 'opacity-100' : 'opacity-0',
           !isVisible && 'pointer-events-none'
         )}
       >
-        <ArrowUp className="h-5 w-5" />
+        <ArrowUp className="h-6 w-6" />
         <span className="sr-only">Go to top</span>
       </Button>
     </div>
