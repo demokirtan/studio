@@ -217,6 +217,52 @@ export function AlgorithmInsights({ algorithm }: { algorithm: string }) {
                 </CardContent>
             </Card>
 
+            <Card className="bg-secondary/30 p-8">
+                <h3 className="mb-6 text-xl font-bold">Algorithm Categories &amp; Real-World Applications</h3>
+                <div className="grid gap-8 md:grid-cols-2">
+                    <div>
+                        <h4 className="mb-4 text-lg font-semibold">Sorting Algorithms</h4>
+                        <div className="space-y-4">
+                            <div className="border-l-4 border-blue-500 pl-4">
+                                <h5 className="mb-1 font-medium">Bubble Sort</h5>
+                                <p className="mb-2 text-sm text-muted-foreground">Educational algorithm demonstrating basic sorting concepts with simple implementation.</p>
+                                <div className="text-xs text-muted-foreground/80"><strong>Applications:</strong> Teaching tool, small dataset sorting, embedded systems with memory constraints</div>
+                            </div>
+                            <div className="border-l-4 border-green-500 pl-4">
+                                <h5 className="mb-1 font-medium">Quick Sort</h5>
+                                <p className="mb-2 text-sm text-muted-foreground">Efficient divide-and-conquer algorithm with excellent average-case performance.</p>
+                                <div className="text-xs text-muted-foreground/80"><strong>Applications:</strong> Standard library implementations, database indexing, general-purpose sorting</div>
+                            </div>
+                            <div className="border-l-4 border-purple-500 pl-4">
+                                <h5 className="mb-1 font-medium">Merge Sort</h5>
+                                <p className="mb-2 text-sm text-muted-foreground">Stable sorting algorithm with guaranteed O(n log n) performance.</p>
+                                <div className="text-xs text-muted-foreground/80"><strong>Applications:</strong> External sorting, stable sorting requirements, parallel processing</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <h4 className="mb-4 text-lg font-semibold">Searching Algorithms</h4>
+                        <div className="space-y-4">
+                            <div className="border-l-4 border-teal-500 pl-4">
+                                <h5 className="mb-1 font-medium">Binary Search</h5>
+                                <p className="mb-2 text-sm text-muted-foreground">Highly efficient search algorithm for sorted data with logarithmic time complexity.</p>
+                                <div className="text-xs text-muted-foreground/80"><strong>Applications:</strong> Database indexing, library systems, phone books, search engines</div>
+                            </div>
+                            <div className="rounded-lg bg-background/50 p-4">
+                                <h5 className="mb-2 font-medium">Coming Soon: Advanced Algorithms</h5>
+                                <ul className="space-y-1 text-sm text-muted-foreground list-disc pl-5">
+                                    <li>Graph algorithms (DFS, BFS, Dijkstra)</li>
+                                    <li>Dynamic programming solutions</li>
+                                    <li>Tree traversal algorithms</li>
+                                    <li>String matching algorithms</li>
+                                    <li>Greedy algorithm implementations</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </Card>
+
 
             <Card className="bg-secondary/30 p-8">
                 <h3 className="mb-6 text-xl font-bold">Frequently Asked Questions</h3>
