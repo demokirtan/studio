@@ -8,8 +8,11 @@ import { Button } from '@/components/ui/button';
 
 export function ScrollToTop() {
   const [isVisible, setIsVisible] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
+    setIsMounted(true);
+
     const toggleVisibility = () => {
       if (window.scrollY > 300) {
         setIsVisible(true);
@@ -29,6 +32,10 @@ export function ScrollToTop() {
       behavior: 'smooth',
     });
   };
+
+  if (!isMounted) {
+    return null;
+  }
 
   return (
     <div className="fixed bottom-6 right-6 z-50">
