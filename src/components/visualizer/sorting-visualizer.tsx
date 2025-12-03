@@ -51,13 +51,27 @@ const initialStateFactory = (numberOfBars: number): State => ({
   isPaused: false,
   isSorted: false,
   numberOfBars: numberOfBars,
-  animationSpeed: 50,
+  animationSpeed: 500, // Default to 'Normal' speed in ms
   algorithm: 'bubbleSort',
 });
 
 function reducer(state: State, action: Action): State {
   switch (action.type) {
     case 'SET_CONFIG':
+      if (action.payload.numberOfBars && action.payload.numberOfBars !== state.numberOfBars) {
+        // When number of bars changes, we need a full reset
+        const newArray = [];
+        for (let i = 0; i < action.payload.numberOfBars; i++) {
+            newArray.push(Math.floor(Math.random() * (500 - 20 + 1)) + 20);
+        }
+        return { 
+          ...initialStateFactory(action.payload.numberOfBars),
+          array: newArray,
+          numberOfBars: action.payload.numberOfBars,
+          animationSpeed: state.animationSpeed,
+          algorithm: state.algorithm,
+        };
+      }
       return { ...state, ...action.payload };
     case 'START_SORT':
       return {
@@ -72,6 +86,9 @@ function reducer(state: State, action: Action): State {
     case 'PAUSE_RESUME':
       return { ...state, isPaused: !state.isPaused };
     case 'STEP_FORWARD':
+        if(state.currentStep >= state.animations.length) {
+            return { ...state, isSorting: false, isPaused: false, isSorted: true };
+        }
       return { ...state, currentStep: state.currentStep + 1 };
     case 'RESET':
       return {
@@ -114,28 +131,32 @@ const getBubbleSortAnimations = (array: number[]): AnimationStep[] => {
 // --- Main Component ---
 export function SortingVisualizer() {
     const isMobile = useIsMobile();
-    const [state, dispatch] = useReducer(reducer, initialStateFactory(10));
+    const [state, dispatch] = useReducer(reducer, initialStateFactory(isMobile ? 10 : 15));
     const { array, animations, currentStep, isSorting, isPaused, isSorted, numberOfBars, animationSpeed, algorithm } = state;
     
     // Derived state for the array being displayed, which changes during animations
     const [displayArray, setDisplayArray] = useState<number[]>([]);
     const [barColors, setBarColors] = useState<string[]>([]);
 
-    const generateRandomArray = useCallback(() => {
+    const generateRandomArray = useCallback((numBars: number) => {
         const newArray: number[] = [];
-        for (let i = 0; i < numberOfBars; i++) {
+        for (let i = 0; i < numBars; i++) {
             newArray.push(Math.floor(Math.random() * (500 - 20 + 1)) + 20);
         }
-        dispatch({ type: 'RESET', payload: { array: newArray, numberOfBars } });
-        setDisplayArray(newArray);
-    }, [numberOfBars]);
+        dispatch({ type: 'RESET', payload: { array: newArray, numberOfBars: numBars } });
+    }, []);
 
     useEffect(() => {
-        generateRandomArray();
-    }, [numberOfBars]);
+        setDisplayArray(array);
+    }, [array]);
+
+    useEffect(() => {
+        generateRandomArray(numberOfBars);
+    }, []);
+
 
     const handleSort = () => {
-        if (isSorted) return;
+        if (isSorting || isSorted) return;
         const originalArray = array.slice();
         let anims: AnimationStep[] = [];
         switch (algorithm) {
@@ -149,29 +170,43 @@ export function SortingVisualizer() {
     };
 
     const handleReset = () => {
-        generateRandomArray();
+        generateRandomArray(numberOfBars);
     }
 
     // Animation Effect
     useEffect(() => {
-        if (!isSorting || isPaused) return;
+        if (!isSorting || isPaused || currentStep >= animations.length) {
+            if (isSorting && currentStep >= animations.length) {
+                dispatch({ type: 'SORT_COMPLETE' });
+            }
+            return;
+        };
 
         const timeout = setTimeout(() => {
-            if (currentStep >= animations.length) {
-                dispatch({ type: 'SORT_COMPLETE' });
-                return;
+            const animationStep = animations[currentStep];
+            
+            // Create a temporary array to apply swaps to
+            const newDisplayArray = [...displayArray];
+            if (animationStep.type === 'swap') {
+                const [index1, index2] = animationStep.indices;
+                const [val1, val2] = animationStep.values!;
+                newDisplayArray[index1] = val1;
+                newDisplayArray[index2] = val2;
+                setDisplayArray(newDisplayArray);
             }
 
-            const animationStep = animations[currentStep];
-            const newDisplayArray = [...displayArray];
+            // Determine colors based on the current step
             const newBarColors = new Array(numberOfBars).fill(BAR_COLOR);
-
-            animations.slice(0, currentStep + 1).forEach(step => {
-                if (step.type === 'sorted') {
-                    step.indices.forEach(i => newBarColors[i] = SORTED_COLOR);
+            // Color sorted elements first
+            for(let i = 0; i < animations.length && i <= currentStep; i++) {
+                if (animations[i].type === 'sorted') {
+                    animations[i].indices.forEach(idx => {
+                        if (idx < newBarColors.length) newBarColors[idx] = SORTED_COLOR;
+                    });
                 }
-            });
+            }
 
+            // Then apply active step colors
             if (animationStep) {
               switch (animationStep.type) {
                 case 'compare':
@@ -180,25 +215,18 @@ export function SortingVisualizer() {
                   });
                   break;
                 case 'swap':
-                  const [index1, index2] = animationStep.indices;
-                  const [val1, val2] = animationStep.values!;
-                  newDisplayArray[index1] = val1;
-                  newDisplayArray[index2] = val2;
-                  if (newBarColors[index1] !== SORTED_COLOR) newBarColors[index1] = SWAPPING_COLOR;
-                  if (newBarColors[index2] !== SORTED_COLOR) newBarColors[index2] = SWAPPING_COLOR;
-                  break;
-                case 'sorted':
-                  animationStep.indices.forEach(i => newBarColors[i] = SORTED_COLOR);
+                  animationStep.indices.forEach(i => {
+                    if (newBarColors[i] !== SORTED_COLOR) newBarColors[i] = SWAPPING_COLOR;
+                  });
                   break;
               }
             }
             
-            setDisplayArray(newDisplayArray);
             setBarColors(newBarColors);
 
             dispatch({ type: 'STEP_FORWARD' });
 
-        }, 101 - animationSpeed);
+        }, animationSpeed);
 
         return () => clearTimeout(timeout);
     }, [currentStep, isSorting, isPaused, animations, displayArray, animationSpeed, numberOfBars]);
@@ -208,11 +236,11 @@ export function SortingVisualizer() {
         if (isSorted) {
             const newBarColors = new Array(numberOfBars).fill(SORTED_COLOR);
             setBarColors(newBarColors);
-        } else {
+        } else if (!isSorting) {
             const newBarColors = new Array(numberOfBars).fill(BAR_COLOR);
             setBarColors(newBarColors);
         }
-    }, [isSorted, numberOfBars]);
+    }, [isSorted, isSorting, numberOfBars]);
 
     const isBusy = isSorting;
     const barWidth = useMemo(() => Math.max(800 / numberOfBars, 2), [numberOfBars]);
@@ -277,13 +305,21 @@ export function SortingVisualizer() {
                       </div>
                       <div className="flex items-center gap-2">
                           <label className="text-sm font-medium whitespace-nowrap">Speed</label>
-                          <Slider
-                              value={[animationSpeed]}
-                              onValueChange={(value) => dispatch({ type: 'SET_CONFIG', payload: { animationSpeed: value[0] }})}
-                              min={1} max={100} step={1}
+                          <Select
+                              onValueChange={(value) => dispatch({ type: 'SET_CONFIG', payload: { animationSpeed: Number(value) }})}
+                              defaultValue={String(animationSpeed)}
                               disabled={isSorting && !isPaused}
-                              className="w-24"
-                          />
+                          >
+                            <SelectTrigger className="w-[120px]">
+                                <SelectValue placeholder="Speed" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectItem value="1000">Slow</SelectItem>
+                                <SelectItem value="500">Normal</SelectItem>
+                                <SelectItem value="100">Fast</SelectItem>
+                                <SelectItem value="25">Very Fast</SelectItem>
+                            </SelectContent>
+                          </Select>
                       </div>
                   </div>
               </div>
@@ -321,4 +357,5 @@ export function SortingVisualizer() {
             </Card>
         </div>
     );
-}
+
+    
