@@ -1,4 +1,5 @@
 
+
 "use client";
 
 import { useRef } from "react";
@@ -6,7 +7,7 @@ import { EducationTimeline } from "./education-timeline";
 import { Separator } from "../ui/separator";
 import { motion, useScroll, useTransform } from "framer-motion";
 
-export function AboutSection() {
+export function AboutSection({ children }: { children: React.ReactNode }) {
   const targetRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: targetRef,
@@ -21,7 +22,7 @@ export function AboutSection() {
       <div id="journey" className="relative bg-background">
         <EducationTimeline />
       </div>
-      <div ref={targetRef} className="relative z-10 max-w-5xl mx-auto px-4 bg-background h-dvh">
+      <div ref={targetRef} className="relative z-10 bg-background h-[200vh]">
           <div className="sticky top-0 flex justify-center items-center h-dvh">
               <motion.h2 
                 style={{ y, opacity }}
@@ -29,6 +30,9 @@ export function AboutSection() {
               >
                 Dream. Make. Change.
               </motion.h2>
+          </div>
+          <div className="relative z-20 -mt-[100vh] bg-background">
+            {children}
           </div>
         </div>
     </>

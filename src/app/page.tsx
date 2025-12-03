@@ -118,8 +118,9 @@ export default function Home() {
           </>
         )}
       </div>
-      <AboutSection />
-      <SkillsSection />
+      <AboutSection>
+        <SkillsSection />
+      </AboutSection>
       <ResumeSection />
       <ExperienceSection />
       <section className="py-16 sm:py-24 text-center">
