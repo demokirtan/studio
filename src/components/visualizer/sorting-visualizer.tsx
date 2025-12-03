@@ -1,19 +1,23 @@
 
 "use client";
 
-import React, { useState, useEffect, useReducer, useCallback, useMemo } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { useToast } from '@/hooks/use-toast';
 import { getAnimations } from '@/lib/algorithms';
-import { initialStateFactory, reducer } from './visualizer-state';
+import type { State, Action } from './visualizer-state';
 import { VisualizerControls } from './visualizer-controls';
 import { VisualizerDisplay } from './visualizer-display';
 import { VisualizerLegend } from './visualizer-legend';
 
+type SortingVisualizerProps = {
+    state: State;
+    dispatch: React.Dispatch<Action>;
+};
+
 // --- Main Component ---
-export function SortingVisualizer() {
+export function SortingVisualizer({ state, dispatch }: SortingVisualizerProps) {
     const isMobile = useIsMobile();
-    const [state, dispatch] = useReducer(reducer, initialStateFactory(isMobile ? 15 : 15));
     const { array, animations, currentStep, isSorting, isPaused, isSorted, numberOfBars, animationSpeed, algorithm } = state;
     
     const [displayArray, setDisplayArray] = useState<number[]>([]);
@@ -28,10 +32,11 @@ export function SortingVisualizer() {
             newArray.push(Math.floor(Math.random() * (500 - 20 + 1)) + 20);
         }
         dispatch({ type: 'RESET', payload: { array: newArray, numberOfBars: numBars } });
-    }, []);
+    }, [dispatch]);
 
     useEffect(() => {
         generateRandomArray(numberOfBars);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const handleSort = () => {
@@ -149,14 +154,11 @@ export function SortingVisualizer() {
         }
 
         const timeout = setTimeout(() => {
-            // This is the auto-play step
-            dispatch({ type: 'STEP_FORWARD' }); 
-            // We immediately toggle pause off to allow continuous play
-            dispatch({ type: 'PAUSE_RESUME' });
+            dispatch({ type: 'STEP_FORWARD' });
         }, animationSpeed);
 
         return () => clearTimeout(timeout);
-    }, [currentStep, isSorting, isPaused, animations, animationSpeed]);
+    }, [currentStep, isSorting, isPaused, animations, animationSpeed, dispatch]);
 
 
     // Final "sorted" flash effect

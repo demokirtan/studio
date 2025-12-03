@@ -1,8 +1,14 @@
 
+'use client';
+
 import { SortingVisualizer } from "@/components/visualizer/sorting-visualizer";
 import { AlgorithmInsights } from "@/components/visualizer/algorithm-insights";
+import { useReducer } from "react";
+import { initialStateFactory, reducer } from "@/components/visualizer/visualizer-state";
 
 export default function VisualizerPage() {
+  const [state, dispatch] = useReducer(reducer, initialStateFactory(15));
+
   return (
     <div className="container mx-auto px-4 py-8">
       <header className="text-center mb-8">
@@ -13,8 +19,8 @@ export default function VisualizerPage() {
           Watch sorting algorithms in action. An interactive tool to understand data structures and algorithms.
         </p>
       </header>
-      <SortingVisualizer />
-      <AlgorithmInsights />
+      <SortingVisualizer state={state} dispatch={dispatch} />
+      <AlgorithmInsights algorithm={state.algorithm} />
     </div>
   );
 }
