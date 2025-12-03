@@ -7,6 +7,7 @@ import { Footer } from "@/components/shared/footer";
 import { Toaster } from "@/components/ui/toaster";
 import { ThemeProvider } from "@/components/shared/theme-provider";
 import Script from "next/script";
+import { ScrollToTop } from "@/components/shared/scroll-to-top";
 
 const fontInter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 const fontOswald = Oswald({
@@ -93,6 +94,7 @@ export default function RootLayout({
             <Footer />
           </div>
           <Toaster />
+          <ScrollToTop />
         </ThemeProvider>
         <Script src="https://platform.linkedin.com/badges/js/profile.js" async defer type="text/javascript"></Script>
         
