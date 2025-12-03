@@ -1,5 +1,6 @@
 
 import { SortingVisualizer } from "@/components/visualizer/sorting-visualizer";
+import { AlgorithmInsights } from "@/components/visualizer/algorithm-insights";
 
 export default function VisualizerPage() {
   return (
@@ -9,10 +10,11 @@ export default function VisualizerPage() {
           Sorting Algorithm Visualizer
         </h1>
         <p className="mx-auto mt-4 max-w-2xl text-lg text-muted-foreground">
-          Watch sorting algorithms in action.
+          Watch sorting algorithms in action. An interactive tool to understand data structures and algorithms.
         </p>
       </header>
       <SortingVisualizer />
+      <AlgorithmInsights />
     </div>
   );
 }
