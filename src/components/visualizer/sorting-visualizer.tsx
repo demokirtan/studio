@@ -1,14 +1,21 @@
 
 "use client";
 
-import React, { useState, useEffect, useReducer, useCallback, useMemo } from 'react';
+import React, { useState, useEffect, useReducer, useCallback, useMemo, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { Slider } from '@/components/ui/slider';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue, SelectGroup, SelectLabel } from '@/components/ui/select';
-import { Play, Pause, RotateCcw } from 'lucide-react';
+import { Play, Pause, RotateCcw, ChevronsDownUp } from 'lucide-react';
 import { Card } from '../ui/card';
 import { cn } from '@/lib/utils';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { Input } from '../ui/input';
+import { useToast } from '@/hooks/use-toast';
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible"
 
 // --- Color Palette ---
 const BAR_COLOR = 'hsl(var(--primary))';
@@ -172,6 +179,7 @@ const getMergeSortAnimations = (array: number[]): AnimationStep[] => {
     if (array.length <= 1) return animations;
     const auxiliaryArray = array.slice();
     mergeSortHelper(array, 0, array.length - 1, auxiliaryArray, animations);
+    for(let i=0; i<array.length; i++) animations.push({ type: 'sorted', indices: [i] });
     return animations;
 };
 
@@ -220,6 +228,8 @@ function quickSortHelper(array: number[], low: number, high: number, animations:
         const pi = partition(array, low, high, animations);
         quickSortHelper(array, low, pi - 1, animations);
         quickSortHelper(array, pi + 1, high, animations);
+    } else if (low === high) {
+        animations.push({ type: 'sorted', indices: [low] });
     }
 }
 
@@ -236,6 +246,7 @@ function partition(array: number[], low: number, high: number, animations: Anima
     }
     animations.push({ type: 'swap', indices: [i + 1, high], values: [array[high], array[i + 1]] });
     [array[i + 1], array[high]] = [array[high], array[i + 1]];
+    animations.push({ type: 'sorted', indices: [i+1] });
     return i + 1;
 }
 
@@ -339,6 +350,9 @@ export function SortingVisualizer() {
     // Derived state for the array being displayed, which changes during animations
     const [displayArray, setDisplayArray] = useState<number[]>([]);
     const [barColors, setBarColors] = useState<string[]>([]);
+    const [customArrayInput, setCustomArrayInput] = useState('');
+    const [isCustomInputOpen, setCustomInputOpen] = useState(false);
+    const { toast } = useToast();
 
     const generateRandomArray = useCallback((numBars: number) => {
         const newArray: number[] = [];
@@ -395,6 +409,29 @@ export function SortingVisualizer() {
 
     const handleReset = () => {
         generateRandomArray(numberOfBars);
+    }
+
+    const handleSetCustomArray = () => {
+        const numbers = customArrayInput.split(',').map(s => s.trim()).filter(Boolean).map(Number);
+        
+        if (numbers.some(isNaN)) {
+            toast({ variant: 'destructive', title: 'Invalid Input', description: 'Please enter only numbers separated by commas.' });
+            return;
+        }
+
+        if (numbers.length === 0) {
+            toast({ variant: 'destructive', title: 'Invalid Input', description: 'Please enter at least one number.' });
+            return;
+        }
+
+        if (numbers.length > 15) {
+            toast({ variant: 'destructive', title: 'Array Too Large', description: 'Please enter a maximum of 15 numbers.' });
+            return;
+        }
+        
+        dispatch({ type: 'RESET', payload: { array: numbers, numberOfBars: numbers.length } });
+        setCustomInputOpen(false);
+        setCustomArrayInput('');
     }
 
     // Animation Effect
@@ -499,87 +536,107 @@ export function SortingVisualizer() {
     return (
         <div className="flex flex-col items-center w-full gap-4">
             <Card className="w-full max-w-5xl p-4">
-              <div className="flex flex-col sm:flex-row flex-wrap items-center justify-between gap-4">
-                  <div className="flex flex-wrap items-center justify-center gap-4">
-                      <Select
-                          onValueChange={(value) => dispatch({ type: 'SET_CONFIG', payload: { algorithm: value }})}
-                          defaultValue={algorithm}
-                          disabled={isBusy}
-                      >
-                          <SelectTrigger className="w-[180px]">
-                              <SelectValue placeholder="Select Algorithm" />
-                          </SelectTrigger>
-                          <SelectContent>
-                              <SelectGroup>
-                                <SelectLabel>Basic Sorts</SelectLabel>
-                                <SelectItem value="bubbleSort">Bubble Sort</SelectItem>
-                                <SelectItem value="selectionSort">Selection Sort</SelectItem>
-                                <SelectItem value="insertionSort">Insertion Sort</SelectItem>
-                              </SelectGroup>
-                               <SelectGroup>
-                                <SelectLabel>Efficient Sorts</SelectLabel>
-                                <SelectItem value="mergeSort">Merge Sort</SelectItem>
-                                <SelectItem value="quickSort">Quick Sort</SelectItem>
-                                <SelectItem value="heapSort">Heap Sort</SelectItem>
-                              </SelectGroup>
-                               <SelectGroup>
-                                <SelectLabel>Other Sorts</SelectLabel>
-                                <SelectItem value="cocktailSort">Cocktail Sort</SelectItem>
-                                <SelectItem value="shellSort">Shell Sort</SelectItem>
-                              </SelectGroup>
-                          </SelectContent>
-                      </Select>
-                      <Button onClick={handleReset} disabled={isSorting}>
-                          Random Array
-                      </Button>
-                  </div>
+                <Collapsible open={isCustomInputOpen} onOpenChange={setCustomInputOpen}>
+                    <div className="flex flex-col sm:flex-row flex-wrap items-center justify-between gap-4">
+                        <div className="flex flex-wrap items-center justify-center gap-4">
+                            <Select
+                                onValueChange={(value) => dispatch({ type: 'SET_CONFIG', payload: { algorithm: value }})}
+                                defaultValue={algorithm}
+                                disabled={isBusy}
+                            >
+                                <SelectTrigger className="w-[180px]">
+                                    <SelectValue placeholder="Select Algorithm" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectGroup>
+                                    <SelectLabel>Basic Sorts</SelectLabel>
+                                    <SelectItem value="bubbleSort">Bubble Sort</SelectItem>
+                                    <SelectItem value="selectionSort">Selection Sort</SelectItem>
+                                    <SelectItem value="insertionSort">Insertion Sort</SelectItem>
+                                    </SelectGroup>
+                                    <SelectGroup>
+                                    <SelectLabel>Efficient Sorts</SelectLabel>
+                                    <SelectItem value="mergeSort">Merge Sort</SelectItem>
+                                    <SelectItem value="quickSort">Quick Sort</SelectItem>
+                                    <SelectItem value="heapSort">Heap Sort</SelectItem>
+                                    </SelectGroup>
+                                    <SelectGroup>
+                                    <SelectLabel>Other Sorts</SelectLabel>
+                                    <SelectItem value="cocktailSort">Cocktail Sort</SelectItem>
+                                    <SelectItem value="shellSort">Shell Sort</SelectItem>
+                                    </SelectGroup>
+                                </SelectContent>
+                            </Select>
+                            <Button onClick={handleReset} disabled={isSorting}>
+                                Random Array
+                            </Button>
+                            <CollapsibleTrigger asChild>
+                                <Button variant="outline" disabled={isSorting}>
+                                    <ChevronsDownUp className="mr-2 h-4 w-4" />
+                                    Custom Array
+                                </Button>
+                            </CollapsibleTrigger>
+                        </div>
 
-                  <div className="flex items-center gap-2">
-                       <Button
-                          variant="ghost"
-                          size="icon"
-                          onClick={() => isSorting ? dispatch({ type: 'PAUSE_RESUME' }) : handleSort()}
-                          disabled={isSorted}
-                        >
-                          {isSorting && !isPaused ? <Pause /> : <Play />}
-                       </Button>
-                       <Button variant="ghost" size="icon" onClick={handleReset}>
-                           <RotateCcw />
-                       </Button>
-                  </div>
+                        <div className="flex items-center gap-2">
+                            <Button
+                                variant="ghost"
+                                size="icon"
+                                onClick={() => isSorting ? dispatch({ type: 'PAUSE_RESUME' }) : handleSort()}
+                                disabled={isSorted}
+                            >
+                                {isSorting && !isPaused ? <Pause /> : <Play />}
+                            </Button>
+                            <Button variant="ghost" size="icon" onClick={handleReset}>
+                                <RotateCcw />
+                            </Button>
+                        </div>
 
-                  <div className="flex flex-wrap items-center justify-center gap-4">
-                      <div className="flex items-center gap-2">
-                          <label className="text-sm font-medium whitespace-nowrap">Size</label>
-                          <Slider
-                              value={[numberOfBars]}
-                              onValueChange={(value) => dispatch({ type: 'SET_CONFIG', payload: { numberOfBars: value[0] }})}
-                              min={5} max={15} step={1}
-                              disabled={isBusy}
-                              className="w-24"
-                          />
-                      </div>
-                      <div className="flex items-center gap-2">
-                          <label className="text-sm font-medium whitespace-nowrap">Speed</label>
-                          <Select
-                              onValueChange={(value) => dispatch({ type: 'SET_CONFIG', payload: { animationSpeed: Number(value) }})}
-                              defaultValue={String(animationSpeed)}
-                              disabled={isSorting && !isPaused}
-                          >
-                            <SelectTrigger className="w-[120px]">
-                                <SelectValue placeholder="Speed" />
-                            </SelectTrigger>
-                            <SelectContent>
-                                <SelectItem value="1000">Slow</SelectItem>
-                                <SelectItem value="500">Normal</SelectItem>
-                                <SelectItem value="100">Fast</SelectItem>
-                                <SelectItem value="25">Very Fast</SelectItem>
-                            </SelectContent>
-                          </Select>
-                      </div>
-                  </div>
-              </div>
+                        <div className="flex flex-wrap items-center justify-center gap-4">
+                            <div className="flex items-center gap-2">
+                                <label className="text-sm font-medium whitespace-nowrap">Size</label>
+                                <Slider
+                                    value={[numberOfBars]}
+                                    onValueChange={(value) => dispatch({ type: 'SET_CONFIG', payload: { numberOfBars: value[0] }})}
+                                    min={5} max={15} step={1}
+                                    disabled={isBusy}
+                                    className="w-24"
+                                />
+                            </div>
+                            <div className="flex items-center gap-2">
+                                <label className="text-sm font-medium whitespace-nowrap">Speed</label>
+                                <Select
+                                    onValueChange={(value) => dispatch({ type: 'SET_CONFIG', payload: { animationSpeed: Number(value) }})}
+                                    defaultValue={String(animationSpeed)}
+                                    disabled={isSorting && !isPaused}
+                                >
+                                <SelectTrigger className="w-[120px]">
+                                    <SelectValue placeholder="Speed" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value="1000">Slow</SelectItem>
+                                    <SelectItem value="500">Normal</SelectItem>
+                                    <SelectItem value="100">Fast</SelectItem>
+                                    <SelectItem value="25">Very Fast</SelectItem>
+                                </SelectContent>
+                                </Select>
+                            </div>
+                        </div>
+                    </div>
+                    <CollapsibleContent className="mt-4">
+                        <div className="flex items-center gap-2 rounded-lg bg-muted p-4">
+                            <Input 
+                                placeholder="Enter numbers separated by commas (max 15)" 
+                                className="flex-1"
+                                value={customArrayInput}
+                                onChange={(e) => setCustomArrayInput(e.target.value)}
+                            />
+                            <Button onClick={handleSetCustomArray}>Set Array</Button>
+                        </div>
+                    </CollapsibleContent>
+                </Collapsible>
             </Card>
+
 
             <Card className="w-full max-w-5xl h-[600px] p-4 flex flex-col justify-between overflow-hidden">
                 <div className="flex-grow flex items-end justify-center gap-1">
@@ -622,5 +679,7 @@ export function SortingVisualizer() {
         </div>
     );
 }
+
+    
 
     
