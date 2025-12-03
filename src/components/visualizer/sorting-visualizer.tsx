@@ -114,7 +114,7 @@ const getBubbleSortAnimations = (array: number[]): AnimationStep[] => {
 // --- Main Component ---
 export function SortingVisualizer() {
     const isMobile = useIsMobile();
-    const [state, dispatch] = useReducer(reducer, initialStateFactory(isMobile ? 20 : 50));
+    const [state, dispatch] = useReducer(reducer, initialStateFactory(10));
     const { array, animations, currentStep, isSorting, isPaused, isSorted, numberOfBars, animationSpeed, algorithm } = state;
     
     // Derived state for the array being displayed, which changes during animations
@@ -270,7 +270,7 @@ export function SortingVisualizer() {
                           <Slider
                               value={[numberOfBars]}
                               onValueChange={(value) => dispatch({ type: 'SET_CONFIG', payload: { numberOfBars: value[0] }})}
-                              min={10} max={100} step={1}
+                              min={5} max={15} step={1}
                               disabled={isBusy}
                               className="w-24"
                           />
